@@ -1,9 +1,10 @@
 import {
+  Virtualizer,
   elementScroll,
   observeElementOffset,
   observeElementRect,
 } from '@tanstack/virtual-core'
-import type { VirtualizerOptions } from '@tanstack/virtual-core'
+import type { VirtualItem, VirtualizerOptions } from '@tanstack/virtual-core'
 
 // The subset of tag input that maps onto virtual-core options. Kept here
 // (rather than imported from index.marko) so this helper has no dependency
@@ -51,4 +52,26 @@ export function buildOptions(
     scrollToFn: elementScroll,
     onChange: notify,
   }
+}
+
+// Render-time (server / pre-mount) slice. Constructs a transient virtual-core instance,
+// reads the initial window as PLAIN DATA, and discards it — nothing live is retained, so
+// nothing live is serialized, and the values recompute identically on resume. With
+// `initialRect` this is a real slice of rows; without it the window is empty but the
+// totalSize (count x estimateSize) is still correct. The constructor and
+// getVirtualItems()/getTotalSize() are SSR-safe (no DOM access); getScrollElement is forced
+// to null so the probe never touches the scroll element, which does not exist on the server.
+export function renderSlice(
+  input: VirtualizerInput,
+): { items: VirtualItem[]; size: number } {
+  // Opt-in: without an explicit viewport hint there is no server slice. Returning the
+  // trivial window keeps every example that does not pass `initialRect` byte-for-byte
+  // identical to a client-only build (empty container, filled on mount).
+  if (!input.initialRect) {
+    return { items: [], size: 0 }
+  }
+  const probe = new Virtualizer<Element, Element>(
+    buildOptions({ ...input, getScrollElement: () => null }, () => {}),
+  )
+  return { items: probe.getVirtualItems(), size: probe.getTotalSize() }
 }

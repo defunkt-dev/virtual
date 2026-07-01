@@ -212,19 +212,23 @@ Both tags are self-closing and expose the same tag-variable shape. Capture it wi
 | `scrollPaddingEnd` | `number` | — | Scroll padding for `scrollToIndex` |
 | `gap` | `number` | — | Gap between items in px |
 | `lanes` | `number` | `1` | Lanes for masonry layouts |
-| `initialOffset` | `number \| (() => number)` | — | Initial scroll offset (px) |
+| `initialOffset` | `number \| (() => number)` | — | Initial scroll offset (px); positions the server slice when `initialRect` is set |
+| `initialRect` | `{ width: number; height: number }` | — | Viewport hint for a server-rendered slice (SSR). When set, the server paints the initial visible rows; omit for client-only fill. See [SSR](#ssr). |
 
 ## `<window-virtualizer>` input reference
 
 Same as `<virtualizer>` except `getScrollElement`, `horizontal`, and `initialOffset`
-are not accepted. The scroll element is always `window`, scrolling is always vertical,
-and the initial offset is read from `window.scrollY` automatically.
+are not accepted (the scroll element is always `window`, scrolling is always vertical,
+and the initial offset is read from `window.scrollY` automatically). It **does** accept
+`initialRect` for a server-rendered slice (see [SSR](#ssr)).
 
 ## SSR
 
-Both tags build their virtualizer on mount (client-side) and render on the server **without an
-`<if=mounted>` guard**. On the server the container renders empty; on mount the client builds the
-virtualizer, measures the scroll element, and fills in the visible rows.
+Both tags render on the server **without an `<if=mounted>` guard** and build their live, observing
+virtualizer client-side in `onMount`. There are two modes.
+
+**Client-fill (default).** Without `initialRect` the server renders an empty container; on mount the
+client measures the scroll element and fills in the visible rows:
 
 ```marko
 <div/scrollEl style="height: 400px; overflow-y: auto; position: relative;">
@@ -243,5 +247,20 @@ virtualizer, measures the scroll element, and fills in the visible rows.
 </div>
 ```
 
-Rendering an initial set of rows on the server (a server-rendered slice) is shown in the SSR
-data-fetching example.
+**Server slice (`initialRect`).** Pass a viewport hint and the server paints the initial visible
+rows into the HTML, so there is real content on first paint before the client resumes:
+
+```marko
+<virtualizer/v
+  count=people.length
+  estimateSize=() => 48
+  getScrollElement=() => scrollEl()
+  initialRect=({ width: 800, height: 400 })
+/>
+```
+
+`initialRect` is a hint, not a measurement: the server has no real viewport, so it uses this size to
+compute the slice, and the client re-measures the actual scroll element on mount and takes over. The
+instance built for the slice is transient — nothing live is serialized; only plain data (the item
+positions and total size) crosses and recomputes identically on resume. The full
+fetch → serialize → resume → slice flow is shown in the SSR data-fetching example.

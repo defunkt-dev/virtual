@@ -1,6 +1,6 @@
 import { Virtualizer } from "@tanstack/virtual-core"
 import type { VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
-import { buildOptions } from "./options"
+import { buildOptions, renderSlice } from "./options"
 
 export interface Input {
   count: number
@@ -18,13 +18,14 @@ export interface Input {
   initialRect?: { width: number; height: number }
 }
 
-// The live virtual-core instance is client-only: built in onMount, where the real scroll
-// element exists and can be observed. On the server the tag renders an empty container
-// (items: [], totalSize: 0) — valid HTML, no <if=mounted> guard required. `initialRect`
-// is accepted and forwarded to virtual-core; a render-time server slice that uses it is
-// handled by the SSR example (built + verified against a real server render).
-<let/items   = ([] as VirtualItem[])/>
-<let/size    = 0/>
+// Render-time seed: derive the initial window as plain data via a transient virtual-core
+// instance (see renderSlice in ./options). On the server this paints the initial slice into
+// the HTML (when `initialRect` is given) or an empty container with the correct total height
+// (when it is not) — no <if=mounted> guard. The values serialize and recompute identically on
+// resume. The live, observing instance is then built client-only in onMount and takes over.
+<const/seed=renderSlice(input)/>
+<let/items   = (seed.items as VirtualItem[])/>
+<let/size    = (seed.size as number)/>
 <let/v       = (null as Virtualizer<Element, Element> | null)/>
 <let/cleanup = (null as (() => void) | null)/>
 
@@ -55,9 +56,6 @@ export interface Input {
     }
 
     current.setOptions({ ...current.options, ...buildOptions(input, notify) })
-
-    // _willUpdate() is a no-op when the scroll element is unchanged, so
-    // notify() explicitly afterwards to recompute on count/option changes.
     current._willUpdate()
     notify()
   }
