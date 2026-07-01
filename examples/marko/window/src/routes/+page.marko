@@ -18,26 +18,20 @@
     <h1>Window Virtualisation</h1>
     <p>Uses &lt;window-virtualizer&gt; — the entire page scrolls. Scroll down to see rows.</p>
 
-    <let/mounted = false/>
-    <lifecycle onMount() { mounted = true }/>
-
-    <if=mounted>
-      <window-virtualizer|{ virtualItems, totalSize }|
-        count=10000
-        estimateSize=() => 35
-        overscan=5
-      >
-        <div style=`height: ${totalSize}px; width: 100%; position: relative`>
-          <for|item| of=virtualItems>
-            <div
-              class=item.index % 2 === 0 ? "item item-even" : "item item-odd"
-              style=`position: absolute; top: 0; left: 0; width: 100%; height: ${item.size}px; transform: translateY(${item.start}px)`
-            >
-              Row ${item.index}
-            </div>
-          </for>
+    <window-virtualizer/v
+      count=10000
+      estimateSize=() => 35
+      overscan=5
+    />
+    <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>
+      <for|item| of=v.virtualItems>
+        <div
+          class=item.index % 2 === 0 ? "item item-even" : "item item-odd"
+          style=`position: absolute; top: 0; left: 0; width: 100%; height: ${item.size}px; transform: translateY(${item.start}px)`
+        >
+          Row ${item.index}
         </div>
-      </window-virtualizer>
-    </if>
+      </for>
+    </div>
   </body>
 </html>

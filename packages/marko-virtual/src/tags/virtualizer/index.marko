@@ -15,19 +15,18 @@ export interface Input {
   gap?: number
   lanes?: number
   initialOffset?: number | (() => number)
-  content: Marko.Body<[{
-    virtualItems: VirtualItem[]
-    totalSize: number
-    measureElement: ((el: Element | null) => void) | undefined
-    scrollToIndex: (index: number, options?: ScrollToOptions) => void
-    scrollToOffset: (offset: number, options?: ScrollToOptions) => void
-  }]>
+  initialRect?: { width: number; height: number }
 }
 
-<let/v       = (null as Virtualizer<Element, Element> | null)/>
-<let/cleanup = (null as (() => void) | null)/>
+// The live virtual-core instance is client-only: built in onMount, where the real scroll
+// element exists and can be observed. On the server the tag renders an empty container
+// (items: [], totalSize: 0) — valid HTML, no <if=mounted> guard required. `initialRect`
+// is accepted and forwarded to virtual-core; a render-time server slice that uses it is
+// handled by the SSR example (built + verified against a real server render).
 <let/items   = ([] as VirtualItem[])/>
 <let/size    = 0/>
+<let/v       = (null as Virtualizer<Element, Element> | null)/>
+<let/cleanup = (null as (() => void) | null)/>
 
 <lifecycle<{}>
   onMount() {
@@ -41,6 +40,7 @@ export interface Input {
     v = new Virtualizer<Element, Element>(buildOptions(input, notify))
     cleanup = v!._didMount()
     v!._willUpdate()
+    notify()
   }
 
   onUpdate() {
@@ -69,10 +69,10 @@ export interface Input {
   }
 />
 
-<${input.content}
-  virtualItems=items
-  totalSize=size
-  measureElement=v?.measureElement
-  scrollToIndex=(index: number, options?: ScrollToOptions) => v?.scrollToIndex(index, options)
-  scrollToOffset=(offset: number, options?: ScrollToOptions) => v?.scrollToOffset(offset, options)
-/>
+<return=({
+  virtualItems: items,
+  totalSize: size,
+  measureElement: v?.measureElement,
+  scrollToIndex: (index: number, options?: ScrollToOptions) => v?.scrollToIndex(index, options),
+  scrollToOffset: (offset: number, options?: ScrollToOptions) => v?.scrollToOffset(offset, options),
+})>

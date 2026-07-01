@@ -21,10 +21,13 @@ export interface VirtualizerInput {
   gap?: number
   lanes?: number
   initialOffset?: number | (() => number)
+  // Viewport size used for the render-time (server / pre-mount) slice. When omitted,
+  // virtual-core's default 0x0 rect yields an empty window (totalSize is still correct).
+  initialRect?: { width: number; height: number }
 }
 
 // Single source of truth for the input -> virtual-core option mapping,
-// shared by onMount (construction) and onUpdate (setOptions).
+// shared by the render-time seed, onMount (construction) and onUpdate (setOptions).
 export function buildOptions(
   input: VirtualizerInput,
   notify: () => void,
@@ -42,6 +45,7 @@ export function buildOptions(
     gap: input.gap,
     lanes: input.lanes,
     initialOffset: input.initialOffset,
+    initialRect: input.initialRect,
     observeElementRect,
     observeElementOffset,
     scrollToFn: elementScroll,

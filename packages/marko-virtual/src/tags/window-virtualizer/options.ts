@@ -18,10 +18,15 @@ export interface WindowVirtualizerInput {
   scrollPaddingEnd?: number
   gap?: number
   lanes?: number
+  // Window viewport size for the render-time (server / pre-mount) slice. When omitted,
+  // virtual-core's default 0x0 rect yields an empty window (totalSize is still correct).
+  // The window scroll position (initialOffset) is read from window.scrollY on the client
+  // and defaults to 0 (top) on the server.
+  initialRect?: { width: number; height: number }
 }
 
 // Single source of truth for the input -> virtual-core option mapping,
-// shared by onMount (construction) and onUpdate (setOptions).
+// shared by the render-time seed, onMount (construction) and onUpdate (setOptions).
 export function buildOptions(
   input: WindowVirtualizerInput,
   notify: () => void,
@@ -38,6 +43,7 @@ export function buildOptions(
     gap: input.gap,
     lanes: input.lanes,
     initialOffset: () => (typeof document !== 'undefined' ? window.scrollY : 0),
+    initialRect: input.initialRect,
     observeElementRect: observeWindowRect,
     observeElementOffset: observeWindowOffset,
     scrollToFn: windowScroll,

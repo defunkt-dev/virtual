@@ -13,6 +13,9 @@ row, column, and grid virtualisation via two auto-discovered Marko tags:
 Tags are discovered automatically by the Marko compiler when the package is
 installed. No imports are needed in your `.marko` files.
 
+Each tag is used **self-closing** and exposes a **tag variable** (written `<virtualizer/v/>`).
+You then own the markup, reading `v.virtualItems` and `v.totalSize` to render the visible rows.
+
 ## Installation
 
 ```sh
@@ -22,127 +25,16 @@ npm install @tanstack/marko-virtual
 ## Row virtualisation
 
 ```marko
-<let/mounted = false/>
-<lifecycle onMount() { mounted = true }/>
-
-<if=mounted>
-  <div/scrollEl
-    style="height: 400px; width: 400px; overflow-y: auto; position: relative;"
-  >
-    <virtualizer|{ virtualItems, totalSize }|
-      count=10000
-      estimateSize=() => 35
-      getScrollElement=scrollEl
-    >
-      <div style=`height: ${totalSize}px; width: 100%; position: relative`>
-        <for|item| of=virtualItems>
-          <div
-            style=`
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: ${item.size}px;
-              transform: translateY(${item.start}px);
-            `
-          >
-            Row ${item.index}
-          </div>
-        </for>
-      </div>
-    </virtualizer>
-  </div>
-</if>
-```
-
-## Column virtualisation
-
-Same tag, `horizontal=true`:
-
-```marko
 <div/scrollEl
-  style="width: 400px; height: 100px; overflow-x: auto; position: relative;"
+  style="height: 400px; width: 400px; overflow-y: auto; position: relative;"
 >
-  <virtualizer|{ virtualItems, totalSize }|
-    count=10000
-    estimateSize=() => 100
-    horizontal=true
-    getScrollElement=scrollEl
-  >
-    <div style=`width: ${totalSize}px; height: 100%; position: relative`>
-      <for|item| of=virtualItems>
-        <div
-          style=`
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: ${item.size}px;
-            transform: translateX(${item.start}px);
-          `
-        >
-          Column ${item.index}
-        </div>
-      </for>
-    </div>
-  </virtualizer>
-</div>
-```
-
-## Grid virtualisation
-
-Compose two `<virtualizer>` tags — one for rows, one for columns — sharing the
-same scroll element:
-
-```marko
-<div/scrollEl
-  style="height: 500px; width: 500px; overflow: auto; position: relative;"
->
-  <virtualizer|{ virtualItems: rowItems, totalSize: rowTotal }|
+  <virtualizer/v
     count=10000
     estimateSize=() => 35
-    getScrollElement=scrollEl
-  >
-    <virtualizer|{ virtualItems: colItems, totalSize: colTotal }|
-      count=200
-      estimateSize=() => 100
-      horizontal=true
-      getScrollElement=scrollEl
-    >
-      <div style=`height: ${rowTotal}px; width: ${colTotal}px; position: relative`>
-        <for|row| of=rowItems>
-          <for|col| of=colItems>
-            <div
-              style=`
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: ${col.size}px;
-                height: ${row.size}px;
-                transform: translateX(${col.start}px) translateY(${row.start}px);
-              `
-            >
-              Cell ${row.index}, ${col.index}
-            </div>
-          </for>
-        </for>
-      </div>
-    </virtualizer>
-  </virtualizer>
-</div>
-```
-
-## Window virtualisation
-
-Use `<window-virtualizer>` when the entire page scrolls rather than a container:
-
-```marko
-<window-virtualizer|{ virtualItems, totalSize }|
-  count=10000
-  estimateSize=() => 35
->
-  <div style=`height: ${totalSize}px; position: relative`>
-    <for|item| of=virtualItems>
+    getScrollElement=() => scrollEl()
+  />
+  <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>
+    <for|item| of=v.virtualItems>
       <div
         style=`
           position: absolute;
@@ -157,41 +49,145 @@ Use `<window-virtualizer>` when the entire page scrolls rather than a container:
       </div>
     </for>
   </div>
-</window-virtualizer>
+</div>
+```
+
+## Column virtualisation
+
+Same tag, `horizontal=true`:
+
+```marko
+<div/scrollEl
+  style="width: 400px; height: 100px; overflow-x: auto; position: relative;"
+>
+  <virtualizer/v
+    count=10000
+    estimateSize=() => 100
+    horizontal=true
+    getScrollElement=() => scrollEl()
+  />
+  <div style=`width: ${v.totalSize}px; height: 100%; position: relative`>
+    <for|item| of=v.virtualItems>
+      <div
+        style=`
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: ${item.size}px;
+          transform: translateX(${item.start}px);
+        `
+      >
+        Column ${item.index}
+      </div>
+    </for>
+  </div>
+</div>
+```
+
+## Grid virtualisation
+
+Compose two `<virtualizer>` tags — one for rows, one for columns — sharing the
+same scroll element. Each returns its own tag variable. Pass `getScrollElement` as an
+arrow (`() => ref()`) so each virtualizer resolves its own element:
+
+```marko
+<div/scrollEl
+  style="height: 500px; width: 500px; overflow: auto; position: relative;"
+>
+  <virtualizer/rowV
+    count=10000
+    estimateSize=() => 35
+    getScrollElement=() => scrollEl()
+  />
+  <virtualizer/colV
+    count=200
+    estimateSize=() => 100
+    horizontal=true
+    getScrollElement=() => scrollEl()
+  />
+  <div style=`height: ${rowV.totalSize}px; width: ${colV.totalSize}px; position: relative`>
+    <for|row| of=rowV.virtualItems>
+      <for|col| of=colV.virtualItems>
+        <div
+          style=`
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: ${col.size}px;
+            height: ${row.size}px;
+            transform: translateX(${col.start}px) translateY(${row.start}px);
+          `
+        >
+          Cell ${row.index}, ${col.index}
+        </div>
+      </for>
+    </for>
+  </div>
+</div>
+```
+
+## Window virtualisation
+
+Use `<window-virtualizer>` when the entire page scrolls rather than a container:
+
+```marko
+<window-virtualizer/v
+  count=10000
+  estimateSize=() => 35
+/>
+<div style=`height: ${v.totalSize}px; position: relative`>
+  <for|item| of=v.virtualItems>
+    <div
+      style=`
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: ${item.size}px;
+        transform: translateY(${item.start}px);
+      `
+    >
+      Row ${item.index}
+    </div>
+  </for>
+</div>
 ```
 
 ## Dynamic / variable item sizes
 
-For items with unknown heights, use `measureElement` as an effect-driven ref
+For items with unknown heights, use `measureElement` as a `<script>`-driven ref
 to measure each element after render:
 
 ```marko
 <div/scrollEl style="height: 400px; overflow-y: auto">
-  <virtualizer|{ virtualItems, totalSize, measureElement }|
+  <virtualizer/v
     count=data.length
     estimateSize=() => 50
-    getScrollElement=scrollEl
-  >
-    <div style=`height: ${totalSize}px; position: relative`>
-      <for|item| of=virtualItems>
-        <div/el
-          data-index=item.index
-          style=`position: absolute; top: 0; width: 100%; transform: translateY(${item.start}px)`>
-          <script() {
-            // measureElement reads the actual rendered height and updates the virtualizer
-            if (el() && measureElement) measureElement(el())
-          }/>
-          ${data[item.index].text}
-        </div>
-      </for>
-    </div>
-  </virtualizer>
+    getScrollElement=() => scrollEl()
+  />
+  <div style=`height: ${v.totalSize}px; position: relative`>
+    <for|item| of=v.virtualItems>
+      <div/el
+        data-index=item.index
+        style=`position: absolute; top: 0; width: 100%; transform: translateY(${item.start}px)`>
+        <script() {
+          // re-run when the item changes; measureElement reads the rendered
+          // height and feeds it back to the virtualizer
+          const _key = item.key
+          if (el() && v.measureElement) v.measureElement(el())
+        }/>
+        ${data[item.index].text}
+      </div>
+    </for>
+  </div>
 </div>
 ```
 
 ## Tag variable reference
 
-Both tags expose the same tag variable shape:
+Both tags are self-closing and expose the same tag-variable shape. Capture it with
+`<virtualizer/v/>` (or any name) and read its properties as `v.property`:
 
 | Property | Type | Description |
 |---|---|---|
@@ -216,37 +212,36 @@ Both tags expose the same tag variable shape:
 | `scrollPaddingEnd` | `number` | — | Scroll padding for `scrollToIndex` |
 | `gap` | `number` | — | Gap between items in px |
 | `lanes` | `number` | `1` | Lanes for masonry layouts |
-| `initialOffset` | `number \| (() => number)` | — | Initial scroll offset |
+| `initialOffset` | `number \| (() => number)` | — | Initial scroll offset (px) |
 
 ## `<window-virtualizer>` input reference
 
-Same as `<virtualizer>` except `getScrollElement`, `horizontal`, and
-`initialOffset` are not accepted. The scroll element is always `window`,
-scrolling is always vertical, and the initial offset is read from
-`window.scrollY` automatically.
+Same as `<virtualizer>` except `getScrollElement`, `horizontal`, and `initialOffset`
+are not accepted. The scroll element is always `window`, scrolling is always vertical,
+and the initial offset is read from `window.scrollY` automatically.
 
-## SSR note
+## SSR
 
-`<virtualizer>` and `<window-virtualizer>` are client-only tags. The
-`<lifecycle>` tag inside them never runs during SSR, so the tag variable
-will be empty (`virtualItems: []`, `totalSize: 0`) on the server.
-
-Wrap the tag in `<if=mounted>` (where `mounted` is set by `<lifecycle onMount>`) to
-ensure the scroll container exists in the DOM before the virtualizer attaches:
+Both tags build their virtualizer on mount (client-side) and render on the server **without an
+`<if=mounted>` guard**. On the server the container renders empty; on mount the client builds the
+virtualizer, measures the scroll element, and fills in the visible rows.
 
 ```marko
-<let/mounted = false/>
-<lifecycle onMount() { mounted = true }/>
-
-<if=mounted>
-  <div/scrollEl style="height: 400px; overflow-y: auto">
-    <virtualizer|{ virtualItems, totalSize }|
-      count=10000
-      estimateSize=() => 35
-      getScrollElement=scrollEl
-    >
-      ...
-    </virtualizer>
+<div/scrollEl style="height: 400px; overflow-y: auto; position: relative;">
+  <virtualizer/v
+    count=10000
+    estimateSize=() => 35
+    getScrollElement=() => scrollEl()
+  />
+  <div style=`height: ${v.totalSize}px; position: relative`>
+    <for|item| of=v.virtualItems>
+      <div style=`position: absolute; top: 0; width: 100%; height: ${item.size}px; transform: translateY(${item.start}px)`>
+        Row ${item.index}
+      </div>
+    </for>
   </div>
-</if>
+</div>
 ```
+
+Rendering an initial set of rows on the server (a server-rendered slice) is shown in the SSR
+data-fetching example.

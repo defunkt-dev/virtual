@@ -1,0 +1,23 @@
+/** File for types only, not actual implementation (see index.marko). **/
+import type { VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
+
+export interface Input {
+  count: number
+  estimateSize?: (index: number) => number
+  overscan?: number
+  paddingStart?: number
+  paddingEnd?: number
+  scrollPaddingStart?: number
+  scrollPaddingEnd?: number
+  gap?: number
+  lanes?: number
+  initialRect?: { width: number; height: number }
+}
+
+return=(undefined as unknown as {
+  virtualItems: VirtualItem[]
+  totalSize: number
+  measureElement: ((el: Element | null) => void) | undefined
+  scrollToIndex: (index: number, options?: ScrollToOptions) => void
+  scrollToOffset: (offset: number, options?: ScrollToOptions) => void
+})
