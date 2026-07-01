@@ -212,7 +212,7 @@ Both tags are self-closing and expose the same tag-variable shape. Capture it wi
 | `scrollPaddingEnd` | `number` | — | Scroll padding for `scrollToIndex` |
 | `gap` | `number` | — | Gap between items in px |
 | `lanes` | `number` | `1` | Lanes for masonry layouts |
-| `initialOffset` | `number \| (() => number)` | — | Initial scroll offset (px); positions the server slice when `initialRect` is set |
+| `initialOffset` | `number \| (() => number)` | — | Scroll offset (px) for the server slice — server-render at a scroll position (deep link / restore). Element only; see [SSR](#ssr) |
 | `initialRect` | `{ width: number; height: number }` | — | Viewport hint for a server-rendered slice (SSR). When set, the server paints the initial visible rows; omit for client-only fill. See [SSR](#ssr). |
 
 ## `<window-virtualizer>` input reference
@@ -264,3 +264,26 @@ compute the slice, and the client re-measures the actual scroll element on mount
 instance built for the slice is transient — nothing live is serialized; only plain data (the item
 positions and total size) crosses and recomputes identically on resume. The full
 fetch → serialize → resume → slice flow is shown in the SSR data-fetching example.
+
+**Scroll restore (`initialOffset`, element only).** To server-render the list at a scroll position
+instead of the top — a deep link, or a restored scroll — pass `initialOffset` alongside `initialRect`.
+The server paints the slice around that offset (it includes `overscan`, so the first *painted* row
+sits a few rows above the first *visible* one). A scroll container's `scrollTop` can't be set
+declaratively in HTML, so restore it on the client on mount to line the rows up:
+
+```marko
+<div/scrollEl class="list">
+  <virtualizer/v
+    count=people.length
+    estimateSize=() => 48
+    getScrollElement=() => scrollEl()
+    initialRect=({ width: 800, height: 400 })
+    initialOffset=(100 * 48)
+  />
+  <!-- rows … -->
+</div>
+<lifecycle onMount() { const el = scrollEl(); if (el) el.scrollTop = 100 * 48 }/>
+```
+
+For `<window-virtualizer>` the offset comes from `window.scrollY` (browser scroll restoration), so
+`initialOffset` is not a separate prop there.
