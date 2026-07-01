@@ -41,7 +41,7 @@
                 class=item.index % 2 === 0 ? "item item-even" : "item item-odd"
                 style=`position: absolute; top: 0; left: 0; width: 100%; transform: translateY(${item.start}px)`
               >
-                <effect() {
+                <script() {
                   const _key = item.key
                   const node = itemEl()
                   if (node && measureElement) measureElement(node)

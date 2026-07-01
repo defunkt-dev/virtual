@@ -1,3 +1,7 @@
+---
+title: Marko Virtual
+---
+
 # Marko Virtual
 
 `@tanstack/marko-virtual` is the Marko 6 adapter for TanStack Virtual. It provides
@@ -173,7 +177,7 @@ to measure each element after render:
         <div/el
           data-index=item.index
           style=`position: absolute; top: 0; width: 100%; transform: translateY(${item.start}px)`>
-          <effect() {
+          <script() {
             // measureElement reads the actual rendered height and updates the virtualizer
             if (el() && measureElement) measureElement(el())
           }/>

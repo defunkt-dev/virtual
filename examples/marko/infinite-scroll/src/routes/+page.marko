@@ -50,7 +50,7 @@
           getScrollElement=scrollEl
           overscan=5
         >
-          <effect() {
+          <script() {
             const last = virtualItems[virtualItems.length - 1]
             if (last && last.index >= rows.length - 1 && !loading && hasMore) {
               const off = offset
