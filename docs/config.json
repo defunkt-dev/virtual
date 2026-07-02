@@ -289,6 +289,26 @@
             {
               "to": "framework/marko/examples/window",
               "label": "Window"
+            },
+            {
+              "to": "framework/marko/examples/ssr",
+              "label": "SSR: No Fetch, Rows Render on Client"
+            },
+            {
+              "to": "framework/marko/examples/ssr-fetch",
+              "label": "SSR: Fetch on Server, Rows Render on Client"
+            },
+            {
+              "to": "framework/marko/examples/ssr-slice",
+              "label": "SSR: Fetch on Server, Rows Render on Server"
+            },
+            {
+              "to": "framework/marko/examples/ssr-restore",
+              "label": "SSR: Fetch on Server, Rows Render on Server at Offset"
+            },
+            {
+              "to": "framework/marko/examples/window-ssr-slice",
+              "label": "SSR Window: Fetch on Server, Rows Render on Server"
             }
           ]
         }

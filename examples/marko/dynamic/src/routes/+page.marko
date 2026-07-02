@@ -28,7 +28,7 @@
       <virtualizer/v
         count=items.length
         estimateSize=() => 80
-        getScrollElement=scrollEl
+        getScrollElement=() => scrollEl()
       />
       <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>
         <for|item| of=v.virtualItems>

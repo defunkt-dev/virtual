@@ -8,7 +8,7 @@
     "preview": "marko-run preview"
   },
   "dependencies": {
-    "@marko/run": "^0.7.0",
+    "@marko/run": "^0.10.0",
     "@tanstack/marko-virtual": "^3.14.0",
     "marko": "^6.0.0"
   },
