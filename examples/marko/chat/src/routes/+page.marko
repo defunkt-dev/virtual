@@ -69,8 +69,7 @@ static const AT_END_PX = 80
       pinnedInitially: false,
       autoHistoryArmed: false,
       autoHistoryEnabled: false,
-      streamTimer: null as ReturnType<typeof setInterval> | null,
-      streamChunk: 0,
+      streamAbort: null as AbortController | null,
     })/>
 
     <const/prependHistory = () => {
@@ -123,28 +122,43 @@ static const AT_END_PX = 80
           messages = [...messages, makeMessage(next)]
         }>Add message</button>
         <button data-testid="stream-reply" onClick() {
-          if (state.streamTimer !== null) return
+          if (state.streamAbort !== null) return
           const id = `stream-${Date.now()}`
-          const chunks = [
-            'Thinking through the failure mode.',
-            ' The list should follow only when it was already pinned.',
-            ' Prepends should keep the reader anchored to the same message.',
-            ' Streaming output should grow without drifting off the bottom.',
-          ]
-          state.streamChunk = 0
           messages = [...messages, { id, author: 'assistant', text: '' }]
-          state.streamTimer = setInterval(() => {
-            state.streamChunk += 1
-            messages = messages.map((message) =>
-              message.id === id
-                ? { ...message, text: chunks.slice(0, state.streamChunk).join('') }
-                : message,
-            )
-            if (state.streamChunk === chunks.length && state.streamTimer !== null) {
-              clearInterval(state.streamTimer)
-              state.streamTimer = null
+          const abort = new AbortController()
+          state.streamAbort = abort
+          // A real streamed reply: one POST whose response body arrives in chunks
+          // (fetch + ReadableStream — how LLM APIs stream). Each decoded chunk is
+          // appended to the message; the virtualizer re-measures the growing row
+          // and followOnAppend keeps the view pinned while it is at the bottom.
+          ;(async () => {
+            try {
+              const response = await fetch('/api/reply', {
+                method: 'POST',
+                body: 'demo prompt',
+                signal: abort.signal,
+              })
+              if (!response.ok || !response.body) {
+                throw new Error(`reply failed: ${response.status}`)
+              }
+              const reader = response.body.getReader()
+              const decoder = new TextDecoder()
+              for (;;) {
+                const { done, value } = await reader.read()
+                if (done) break
+                const chunk = decoder.decode(value, { stream: true })
+                messages = messages.map((message) =>
+                  message.id === id
+                    ? { ...message, text: message.text + chunk }
+                    : message,
+                )
+              }
+            } catch (error) {
+              if (!abort.signal.aborted) throw error
+            } finally {
+              state.streamAbort = null
             }
-          }, 280)
+          })()
         }>Stream reply</button>
         <button data-testid="latest" onClick() { v.scrollToEnd() }>Latest</button>
       </div>
@@ -193,7 +207,7 @@ static const AT_END_PX = 80
     </div>
 
     <lifecycle onDestroy() {
-      if (state.streamTimer !== null) clearInterval(state.streamTimer)
+      state.streamAbort?.abort()
     }/>
   </body>
 </html>

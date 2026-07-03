@@ -132,14 +132,24 @@ test('Latest returns to the bottom and status flips back to At latest', async ({
   await expect(page.locator('[data-key^="message-4"]').last()).toBeVisible()
 })
 
-test('a streamed reply grows in place and stays pinned', async ({ page }) => {
+test('a reply streamed from the server grows progressively and stays pinned', async ({
+  page,
+}) => {
   await page.goto('/')
   await waitForPin(page)
+  const replyResponse = page.waitForResponse(
+    (response) => response.url().endsWith('/api/reply') && response.status() === 200,
+  )
   await page.locator('[data-testid="stream-reply"]').click()
+  await replyResponse // the reply really comes over the network
   const streamed = page.locator('[data-key^="stream-"]')
   await expect(streamed).toBeVisible()
-  await expect(streamed).toContainText('drifting off the bottom', { timeout: 5000 })
+  // progressive: the first chunk is rendered while later chunks have not arrived yet
   await expect(streamed).toContainText('Thinking through the failure mode.')
+  const early = (await streamed.textContent()) ?? ''
+  expect(early).not.toContain('drifting off the bottom')
+  // ... and the rest arrives afterwards, growing the same row
+  await expect(streamed).toContainText('drifting off the bottom', { timeout: 5000 })
   await waitForPin(page)
   await expect(page.locator('[data-testid="status"]')).toHaveText('At latest')
 })

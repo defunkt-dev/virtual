@@ -9,9 +9,15 @@ export default defineConfig({
     baseURL: 'http://localhost:4173',
   },
   webServer: {
-    command: 'npx marko-run dev --port 4173',
+    command: 'npm run dev -- --port 4173',
     url: 'http://localhost:4173',
-    reuseExistingServer: false,
+    // Reuse a manually-started dev server (npm run dev -- --port 4173) if one is
+    // already up — simpler to debug; CI should start its own.
+    reuseExistingServer: !process.env.CI,
+    // Surface the dev server's output in the test terminal so a crashing or
+    // slow-compiling server is visible instead of a silent stall.
+    stdout: 'pipe',
+    stderr: 'pipe',
     timeout: 120_000,
   },
 })
