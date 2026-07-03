@@ -32,9 +32,12 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
       button { padding: 6px 12px; font-size: 13px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; cursor: pointer; }
       button:hover { background: #f3f4f6; }
       .list { border: 1px solid #e5e7eb; border-radius: 6px; overflow: auto; }
-      .item-even { background: #fff; }
-      .item-odd { background: #f6f8fa; }
-      .cell { border: 1px dashed #e5e7eb; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+      /* Center item content and use a strong stripe (mirrors the React example's
+         CSS) so each measured band is legible against the blank padding areas. */
+      .item-even, .item-odd { display: flex; align-items: center; justify-content: center; }
+      .item-even { background: #e6e4dc; }
+      .item-odd { background: #fff; }
+      .cell { border: 1px dashed #d6d3c8; font-size: 12px; display: flex; align-items: center; justify-content: center; }
     </style>
   </head>
   <body>
