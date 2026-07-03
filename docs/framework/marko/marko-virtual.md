@@ -195,7 +195,7 @@ Both tags are self-closing and expose the same tag-variable shape. Capture it wi
 | `totalSize` | `number` | Total scrollable size in px — set as the inner container's `height` (or `width` for columns) |
 | `range` | `{ startIndex: number; endIndex: number } \| null` | The visible index window (excludes overscan). `null` until there is a window. Useful for deriving things like the active sticky header |
 | `measureElement` | `(el: Element \| null) => void` | Ref callback for dynamic item sizing |
-| `scrollToIndex` | `(index: number, options?: ScrollToOptions) => void` | Imperatively scroll to an item by index |
+| `scrollToIndex` | `(index: number, options?: ScrollToOptions) => void` | Imperatively scroll to an item by index. Default `align: 'auto'` scrolls the MINIMUM: downward jumps land the item at the viewport end, upward jumps align it to the start (below `scrollPaddingStart`), and an already fully visible item does not move. Pass `{ align: 'start' }` to always align to the start |
 | `scrollToOffset` | `(offset: number, options?: ScrollToOptions) => void` | Imperatively scroll to a pixel offset |
 | `measure` | `() => void` | Drop all measured sizes and re-measure everything (after a width/font change) |
 | `resizeItem` | `(index: number, size: number) => void` | Set one item's size directly, without a DOM measure |
@@ -234,6 +234,25 @@ Same as `<virtualizer>` except `getScrollElement`, `horizontal`, and `initialOff
 are not accepted (the scroll element is always `window`, scrolling is always vertical,
 and the initial offset is read from `window.scrollY` automatically). It **does** accept
 `initialRect` for a server-rendered slice (see [SSR](#ssr)).
+
+## Inside your own scroll handler, read the element — not the virtualizer
+
+The virtualizer attaches its scroll listener in `onMount`; a handler in your markup attaches
+at hydrate, earlier. During any single scroll event your handler therefore runs FIRST, while
+the virtualizer still holds the PREVIOUS event's offset — so `v.isAtEnd()` and
+`v.getDistanceFromEnd()` called inside your `onScroll` are one event stale (a jump to the top
+can still report "at end"). Compute from the element instead; the arithmetic is identical:
+
+```marko
+<div/scrollEl onScroll() {
+  const el = scrollEl()
+  if (!el) return
+  const atEnd = el.scrollHeight - el.scrollTop - el.clientHeight <= 80
+}>
+```
+
+Everywhere else — click handlers, effects, `<script>` blocks — `v.isAtEnd()` and friends are
+current and safe to use.
 
 ## The virtualizer's lifetime must match its scroll element's
 
