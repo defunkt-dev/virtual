@@ -1,5 +1,5 @@
 import { Virtualizer } from "@tanstack/virtual-core"
-import type { VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
+import type { Range, VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
 import { buildOptions, renderSlice } from "./options"
 
 export interface Input {
@@ -13,6 +13,13 @@ export interface Input {
   gap?: number
   lanes?: number
   initialRect?: { width: number; height: number }
+  getItemKey?: (index: number) => number | string | bigint
+  rangeExtractor?: (range: Range) => number[]
+  indexAttribute?: string
+  initialMeasurementsCache?: VirtualItem[]
+  anchorTo?: 'start' | 'end'
+  followOnAppend?: boolean | ScrollBehavior
+  scrollEndThreshold?: number
 }
 
 // Render-time seed (window counterpart): paints the initial slice into the server HTML when
@@ -21,6 +28,7 @@ export interface Input {
 <const/seed=renderSlice(input)/>
 <let/items   = (seed.items as VirtualItem[])/>
 <let/size    = (seed.size as number)/>
+<let/range   = (seed.range as { startIndex: number; endIndex: number } | null)/>
 <let/v       = (null as Virtualizer<Window, Element> | null)/>
 <let/cleanup = (null as (() => void) | null)/>
 
@@ -31,6 +39,7 @@ export interface Input {
       if (!inst) return
       items = inst.getVirtualItems()
       size  = inst.getTotalSize()
+      range = inst.range
     }
 
     v = new Virtualizer<Window, Element>(buildOptions(input, notify))
@@ -48,6 +57,7 @@ export interface Input {
       if (!inst) return
       items = inst.getVirtualItems()
       size  = inst.getTotalSize()
+      range = inst.range
     }
 
     current.setOptions({ ...current.options, ...buildOptions(input, notify) })
@@ -65,7 +75,13 @@ export interface Input {
 <return=({
   virtualItems: items,
   totalSize: size,
+  range: range,
   measureElement: v?.measureElement,
   scrollToIndex: (index: number, options?: ScrollToOptions) => v?.scrollToIndex(index, options),
   scrollToOffset: (offset: number, options?: ScrollToOptions) => v?.scrollToOffset(offset, options),
+  measure: () => v?.measure(),
+  resizeItem: (index: number, itemSize: number) => v?.resizeItem(index, itemSize),
+  scrollToEnd: (options?: { behavior?: ScrollToOptions['behavior'] }) => v?.scrollToEnd(options),
+  isAtEnd: (threshold?: number) => v?.isAtEnd(threshold) ?? false,
+  getDistanceFromEnd: () => v?.getDistanceFromEnd() ?? Infinity,
 })>

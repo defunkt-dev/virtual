@@ -46,6 +46,11 @@ describe('buildOptions — input to virtual-core option mapping', () => {
   })
 
   test('maps every optional prop through when provided', () => {
+    const getItemKey = (i: number) => `k${i}`
+    const rangeExtractor = () => [0]
+    const cache = [
+      { index: 0, start: 0, size: 32, end: 32, key: 0, lane: 0 },
+    ]
     const opts = buildOptions(
       {
         count: 500,
@@ -61,6 +66,13 @@ describe('buildOptions — input to virtual-core option mapping', () => {
         lanes: 3,
         initialOffset: 1200,
         initialRect: { width: 640, height: 480 },
+        getItemKey,
+        rangeExtractor,
+        indexAttribute: 'data-row-index',
+        initialMeasurementsCache: cache,
+        anchorTo: 'end',
+        followOnAppend: 'smooth',
+        scrollEndThreshold: 24,
       },
       noop,
     )
@@ -75,6 +87,24 @@ describe('buildOptions — input to virtual-core option mapping', () => {
     expect(opts.lanes).toBe(3)
     expect(opts.initialOffset).toBe(1200)
     expect(opts.initialRect).toEqual({ width: 640, height: 480 })
+    expect(opts.getItemKey).toBe(getItemKey)
+    expect(opts.rangeExtractor).toBe(rangeExtractor)
+    expect(opts.indexAttribute).toBe('data-row-index')
+    expect(opts.initialMeasurementsCache).toBe(cache)
+    expect(opts.anchorTo).toBe('end')
+    expect(opts.followOnAppend).toBe('smooth')
+    expect(opts.scrollEndThreshold).toBe(24)
+  })
+
+  test('new optional props stay undefined when omitted (core applies its defaults)', () => {
+    const opts = buildOptions({ count: 10, getScrollElement: () => null }, noop)
+    expect(opts.getItemKey).toBeUndefined()
+    expect(opts.rangeExtractor).toBeUndefined()
+    expect(opts.indexAttribute).toBeUndefined()
+    expect(opts.initialMeasurementsCache).toBeUndefined()
+    expect(opts.anchorTo).toBeUndefined()
+    expect(opts.followOnAppend).toBeUndefined()
+    expect(opts.scrollEndThreshold).toBeUndefined()
   })
 })
 
@@ -90,6 +120,11 @@ describe('buildOptions (window) — input to virtual-core option mapping', () =>
   })
 
   test('maps every optional prop through when provided (no horizontal/initialOffset)', () => {
+    const getItemKey = (i: number) => `k${i}`
+    const rangeExtractor = () => [0]
+    const cache = [
+      { index: 0, start: 0, size: 32, end: 32, key: 0, lane: 0 },
+    ]
     const opts = buildWindowOptions(
       {
         count: 500,
@@ -102,6 +137,13 @@ describe('buildOptions (window) — input to virtual-core option mapping', () =>
         gap: 6,
         lanes: 3,
         initialRect: { width: 1280, height: 800 },
+        getItemKey,
+        rangeExtractor,
+        indexAttribute: 'data-col-index',
+        initialMeasurementsCache: cache,
+        anchorTo: 'end',
+        followOnAppend: true,
+        scrollEndThreshold: 24,
       },
       noop,
     )
@@ -114,5 +156,12 @@ describe('buildOptions (window) — input to virtual-core option mapping', () =>
     expect(opts.gap).toBe(6)
     expect(opts.lanes).toBe(3)
     expect(opts.initialRect).toEqual({ width: 1280, height: 800 })
+    expect(opts.getItemKey).toBe(getItemKey)
+    expect(opts.rangeExtractor).toBe(rangeExtractor)
+    expect(opts.indexAttribute).toBe('data-col-index')
+    expect(opts.initialMeasurementsCache).toBe(cache)
+    expect(opts.anchorTo).toBe('end')
+    expect(opts.followOnAppend).toBe(true)
+    expect(opts.scrollEndThreshold).toBe(24)
   })
 })

@@ -193,9 +193,15 @@ Both tags are self-closing and expose the same tag-variable shape. Capture it wi
 |---|---|---|
 | `virtualItems` | `VirtualItem[]` | The currently visible virtual items |
 | `totalSize` | `number` | Total scrollable size in px — set as the inner container's `height` (or `width` for columns) |
+| `range` | `{ startIndex: number; endIndex: number } \| null` | The visible index window (excludes overscan). `null` until there is a window. Useful for deriving things like the active sticky header |
 | `measureElement` | `(el: Element \| null) => void` | Ref callback for dynamic item sizing |
 | `scrollToIndex` | `(index: number, options?: ScrollToOptions) => void` | Imperatively scroll to an item by index |
 | `scrollToOffset` | `(offset: number, options?: ScrollToOptions) => void` | Imperatively scroll to a pixel offset |
+| `measure` | `() => void` | Drop all measured sizes and re-measure everything (after a width/font change) |
+| `resizeItem` | `(index: number, size: number) => void` | Set one item's size directly, without a DOM measure |
+| `scrollToEnd` | `(options?: { behavior?: ScrollBehavior }) => void` | Scroll to the very end of the list |
+| `isAtEnd` | `(threshold?: number) => boolean` | Whether the scroll position is at (or within `threshold` px of) the end. `false` before mount |
+| `getDistanceFromEnd` | `() => number` | Pixels between the current scroll position and the end. `Infinity` before mount |
 
 ## `<virtualizer>` input reference
 
@@ -214,6 +220,13 @@ Both tags are self-closing and expose the same tag-variable shape. Capture it wi
 | `lanes` | `number` | `1` | Lanes for masonry layouts |
 | `initialOffset` | `number \| (() => number)` | — | Scroll offset (px) for the server slice — server-render at a scroll position (deep link / restore). Element only; see [SSR](#ssr) |
 | `initialRect` | `{ width: number; height: number }` | — | Viewport hint for a server-rendered slice (SSR). When set, the server paints the initial visible rows; omit for client-only fill. See [SSR](#ssr). |
+| `getItemKey` | `(index: number) => number \| string \| bigint` | the index | Stable per-item identity so cached measurements survive reorder |
+| `rangeExtractor` | `(range: Range) => number[]` | `defaultRangeExtractor` | Hook over the visible range: force extra indexes (e.g. a pinned sticky header) into the rendered window. Compose with `defaultRangeExtractor` from `@tanstack/virtual-core` |
+| `indexAttribute` | `string` | `'data-index'` | DOM attribute carrying the item index for `measureElement`. Give two instances measuring the same element (a grid cell) distinct attributes |
+| `initialMeasurementsCache` | `VirtualItem[]` | — | Pre-measured items (plain data) to seed the measurement cache |
+| `anchorTo` | `'start' \| 'end'` | `'start'` | Anchor the window to the list end (a chat pinned to newest). Client-behavioral: it does not position the server slice — use `initialOffset` for that |
+| `followOnAppend` | `boolean \| ScrollBehavior` | `false` | With `anchorTo="end"`: stay pinned to the end as items append |
+| `scrollEndThreshold` | `number` | `1` | How close (px) to the end still counts as "at the end" |
 
 ## `<window-virtualizer>` input reference
 

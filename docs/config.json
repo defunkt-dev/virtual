@@ -291,6 +291,10 @@
               "label": "Window"
             },
             {
+              "to": "framework/marko/examples/chat",
+              "label": "Chat"
+            },
+            {
               "to": "framework/marko/examples/ssr",
               "label": "SSR: No Fetch, Rows Render on Client"
             },

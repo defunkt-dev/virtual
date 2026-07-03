@@ -43,6 +43,67 @@ describe('renderSlice — element virtualizer', () => {
     expect(scrolled.items[0]?.index).toBeGreaterThan(0)
     expect(scrolled.size).toBe(top.size)
   })
+
+  it('range is null without initialRect and spans the slice with it', () => {
+    expect(renderSliceElement(base).range).toBeNull()
+    const { items, range } = renderSliceElement({
+      ...base,
+      initialRect: { width: 800, height: 400 },
+    })
+    expect(range).not.toBeNull()
+    // The slice includes overscan beyond the visible range, so the range sits inside it.
+    expect(range!.startIndex).toBeGreaterThanOrEqual(items[0]!.index)
+    expect(range!.endIndex).toBeLessThanOrEqual(items[items.length - 1]!.index)
+    expect(range!.endIndex).toBeGreaterThanOrEqual(range!.startIndex)
+  })
+
+  it('rangeExtractor in the seed forces extra indexes into the slice (sticky pattern)', () => {
+    const { items } = renderSliceElement({
+      ...base,
+      initialRect: { width: 800, height: 400 },
+      initialOffset: 4800, // window starts around index 100, far from 0
+      rangeExtractor: (r) => {
+        const next = new Set([0]) // the pinned index
+        for (let i = r.startIndex - r.overscan; i <= r.endIndex + r.overscan; i++) {
+          if (i >= 0 && i < r.count) next.add(i)
+        }
+        return [...next].sort((a, b) => a - b)
+      },
+    })
+    expect(items[0]?.index).toBe(0) // forced in even though scrolled away
+    expect(items[1]!.index).toBeGreaterThan(1) // the rest is the scrolled window
+  })
+
+  it('getItemKey flows into the seeded items', () => {
+    const { items } = renderSliceElement({
+      ...base,
+      initialRect: { width: 800, height: 400 },
+      getItemKey: (i) => `row-${i}`,
+    })
+    expect(items[0]?.key).toBe('row-0')
+  })
+
+  it('anchorTo end alone does NOT move the seed; initialOffset paints the end (chat SSR)', () => {
+    // anchorTo is client-behavioral (follow-on-append, resize adjustment) and requires a live
+    // scroll element — it never positions the initial window. A chat page that wants the END
+    // painted into the server HTML passes initialOffset = totalSize - viewport.
+    const rect = { width: 800, height: 400 }
+    const anchoredOnly = renderSliceElement({
+      ...base,
+      initialRect: rect,
+      anchorTo: 'end',
+    })
+    expect(anchoredOnly.items[0]?.index).toBe(0) // still at the top
+
+    const atEnd = renderSliceElement({
+      ...base,
+      initialRect: rect,
+      anchorTo: 'end',
+      initialOffset: 1000 * 48 - 400,
+    })
+    expect(atEnd.items[atEnd.items.length - 1]?.index).toBe(999)
+    expect(atEnd.size).toBe(1000 * 48)
+  })
 })
 
 describe('renderSlice — window virtualizer', () => {
@@ -58,7 +119,7 @@ describe('renderSlice — window virtualizer', () => {
   })
 
   it('with initialRect paints a contiguous slice from index 0 and the full total size', () => {
-    const { items, size } = renderSliceWindow({
+    const { items, size, range } = renderSliceWindow({
       ...base,
       initialRect: { width: 1280, height: 800 },
     })
@@ -66,5 +127,11 @@ describe('renderSlice — window virtualizer', () => {
     expect(items[0]?.index).toBe(0)
     expect(items[items.length - 1]?.index).toBe(items.length - 1)
     expect(size).toBe(1000 * 48)
+    expect(range).not.toBeNull()
+    expect(range!.startIndex).toBe(0)
+  })
+
+  it('range is null without initialRect', () => {
+    expect(renderSliceWindow(base).range).toBeNull()
   })
 })

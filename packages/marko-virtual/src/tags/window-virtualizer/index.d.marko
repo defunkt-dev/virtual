@@ -1,5 +1,5 @@
 /** File for types only, not actual implementation (see index.marko). **/
-import type { VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
+import type { Range, VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
 
 export interface Input {
   count: number
@@ -12,12 +12,25 @@ export interface Input {
   gap?: number
   lanes?: number
   initialRect?: { width: number; height: number }
+  getItemKey?: (index: number) => number | string | bigint
+  rangeExtractor?: (range: Range) => number[]
+  indexAttribute?: string
+  initialMeasurementsCache?: VirtualItem[]
+  anchorTo?: 'start' | 'end'
+  followOnAppend?: boolean | ScrollBehavior
+  scrollEndThreshold?: number
 }
 
 return=(undefined as unknown as {
   virtualItems: VirtualItem[]
   totalSize: number
+  range: { startIndex: number; endIndex: number } | null
   measureElement: ((el: Element | null) => void) | undefined
   scrollToIndex: (index: number, options?: ScrollToOptions) => void
   scrollToOffset: (offset: number, options?: ScrollToOptions) => void
+  measure: () => void
+  resizeItem: (index: number, size: number) => void
+  scrollToEnd: (options?: { behavior?: ScrollToOptions['behavior'] }) => void
+  isAtEnd: (threshold?: number) => boolean
+  getDistanceFromEnd: () => number
 })
