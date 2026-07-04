@@ -303,6 +303,10 @@
               "label": "Smooth Scroll"
             },
             {
+              "to": "framework/marko/examples/table",
+              "label": "Table"
+            },
+            {
               "to": "framework/marko/examples/window",
               "label": "Window"
             },
