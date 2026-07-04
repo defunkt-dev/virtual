@@ -42,6 +42,39 @@ export interface VirtualizerInput {
   followOnAppend?: boolean | ScrollBehavior
   // How close (px) to the end still counts as "at the end" (default 1).
   scrollEndThreshold?: number
+  // The list's offset (px) from the top of its scroll element, when other content sits
+  // above it inside the same scroller. Shifts all position math; item.start values then
+  // INCLUDE this margin (subtract it when positioning items relative to the list).
+  scrollMargin?: number
+  // Disable switch (default true). false is NOT a freeze: core unobserves, clears
+  // its measurements, and renders an EMPTY window until re-enabled (re-enabling
+  // re-windows from the live scroll position).
+  enabled?: boolean
+  // Right-to-left horizontal lists (default false).
+  isRtl?: boolean
+  // ms after the last scroll event before "user is scrolling" ends (default 150).
+  isScrollingResetDelay?: number
+  // Use the native scrollend event instead of the isScrollingResetDelay timer.
+  useScrollendEvent?: boolean
+  // Batch ResizeObserver measurements into animation frames (avoids
+  // "ResizeObserver loop" console errors under heavy resize load).
+  useAnimationFrameWithResizeObserver?: boolean
+  // Masonry/multi-lane: how items are assigned to lanes — by 'estimate' (default)
+  // or by 'measured' sizes.
+  laneAssignmentMode?: 'estimate' | 'measured'
+  // Make the default measurer return the cached (or estimated) size instead of
+  // reading the DOM — freezes sizes when they are already known and DOM
+  // re-measures are unwanted.
+  useCachedMeasurements?: boolean
+  // Verbose engine logging.
+  debug?: boolean
+  // Replace HOW an item's size is read from its element (e.g. include margins,
+  // or measure a child). Defaults to core's border-box measurer.
+  measureElement?: (
+    element: Element,
+    entry: ResizeObserverEntry | undefined,
+    instance: Virtualizer<Element, Element>,
+  ) => number
 }
 
 // Single source of truth for the input -> virtual-core option mapping,
@@ -73,6 +106,16 @@ export function buildOptions(
     anchorTo: input.anchorTo,
     followOnAppend: input.followOnAppend,
     scrollEndThreshold: input.scrollEndThreshold,
+    scrollMargin: input.scrollMargin,
+    enabled: input.enabled,
+    isRtl: input.isRtl,
+    isScrollingResetDelay: input.isScrollingResetDelay,
+    useScrollendEvent: input.useScrollendEvent,
+    useAnimationFrameWithResizeObserver: input.useAnimationFrameWithResizeObserver,
+    laneAssignmentMode: input.laneAssignmentMode,
+    useCachedMeasurements: input.useCachedMeasurements,
+    debug: input.debug,
+    measureElement: input.measureElement,
     observeElementRect,
     observeElementOffset,
     scrollToFn: elementScroll,
@@ -83,10 +126,10 @@ export function buildOptions(
 // Render-time (server / pre-mount) slice. Constructs a transient virtual-core instance,
 // reads the initial window as PLAIN DATA, and discards it — nothing live is retained, so
 // nothing live is serialized, and the values recompute identically on resume. With
-// `initialRect` this is a real slice of rows; without it the window is empty but the
-// totalSize (count x estimateSize) is still correct. The constructor and
-// getVirtualItems()/getTotalSize() are SSR-safe (no DOM access); getScrollElement is forced
-// to null so the probe never touches the scroll element, which does not exist on the server.
+// `initialRect` this is a real slice of rows; without it renderSlice returns the trivial
+// window (no items, size 0). The constructor and getVirtualItems()/getTotalSize() are
+// SSR-safe (no DOM access); getScrollElement is forced to null so the probe never touches
+// the scroll element, which does not exist on the server.
 // `range` is the visible window ({ startIndex, endIndex }) the probe computed — plain data,
 // null when there is no slice.
 export function renderSlice(

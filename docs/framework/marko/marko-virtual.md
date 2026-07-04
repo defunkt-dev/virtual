@@ -227,13 +227,32 @@ Both tags are self-closing and expose the same tag-variable shape. Capture it wi
 | `anchorTo` | `'start' \| 'end'` | `'start'` | Anchor the window to the list end (a chat pinned to newest). Client-behavioral: it does not position the server slice — use `initialOffset` for that |
 | `followOnAppend` | `boolean \| ScrollBehavior` | `false` | With `anchorTo="end"`: stay pinned to the end as items append |
 | `scrollEndThreshold` | `number` | `1` | How close (px) to the end still counts as "at the end" |
+| `scrollMargin` | `number` | `0` | The list's offset (px) from the top of its scroll area, when other content sits above it in the same scroller. `item.start` values then INCLUDE this margin — subtract it when positioning items relative to the list (see the window example) |
+| `enabled` | `boolean` | `true` | Disable switch. `false` is not a freeze: the virtualizer unobserves, clears its measurements, and renders an empty window until re-enabled |
+| `isRtl` | `boolean` | `false` | Right-to-left horizontal lists |
+| `isScrollingResetDelay` | `number` | `150` | ms after the last scroll event before "user is scrolling" ends |
+| `useScrollendEvent` | `boolean` | `false` | Use the native `scrollend` event instead of the `isScrollingResetDelay` timer |
+| `useAnimationFrameWithResizeObserver` | `boolean` | `false` | Batch ResizeObserver measurements into animation frames (avoids "ResizeObserver loop" console errors under heavy resize load) |
+| `laneAssignmentMode` | `'estimate' \| 'measured'` | `'estimate'` | Masonry/multi-lane: assign items to lanes by estimated or measured sizes |
+| `useCachedMeasurements` | `boolean` | `false` | Make the default measurer return the cached (or estimated) size instead of reading the DOM — freezes item sizes when they are already known |
+| `debug` | `boolean` | `false` | Verbose engine logging |
+| `measureElement` | `(element, entry, instance) => number` | border-box measurer | Replace HOW an item's size is read from its element (e.g. include margins, or measure a child) |
 
 ## `<window-virtualizer>` input reference
 
-Same as `<virtualizer>` except `getScrollElement`, `horizontal`, and `initialOffset`
-are not accepted (the scroll element is always `window`, scrolling is always vertical,
-and the initial offset is read from `window.scrollY` automatically). It **does** accept
-`initialRect` for a server-rendered slice (see [SSR](#ssr)).
+Same as `<virtualizer>` except `getScrollElement` is not accepted — the scroll element is
+always `window`. Unlike `<virtualizer>` there are two changed defaults:
+
+- `horizontal` is accepted (the page scrolls sideways) and defaults to `false`.
+- `initialOffset` defaults to the live window scroll position (`window.scrollY`, or
+  `window.scrollX` when `horizontal`) on the client and `0` on the server. Pass a number to
+  override it — e.g. to server-render a slice at a scroll position, paired with
+  `initialRect` (see [SSR](#ssr)).
+
+`scrollMargin` is the signature window-virtualizer option: a window-scrolled list almost never
+starts at the very top of the page, so pass the list's offset from the top of the document and
+subtract it from `item.start` when positioning (the window example measures it with
+`offsetTop` on mount).
 
 ## Inside your own scroll handler, read the element — not the virtualizer
 

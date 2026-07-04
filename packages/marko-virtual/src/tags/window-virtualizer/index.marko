@@ -6,12 +6,14 @@ export interface Input {
   count: number
   estimateSize?: (index: number) => number
   overscan?: number
+  horizontal?: boolean
   paddingStart?: number
   paddingEnd?: number
   scrollPaddingStart?: number
   scrollPaddingEnd?: number
   gap?: number
   lanes?: number
+  initialOffset?: number | (() => number)
   initialRect?: { width: number; height: number }
   getItemKey?: (index: number) => number | string | bigint
   rangeExtractor?: (range: Range) => number[]
@@ -20,6 +22,20 @@ export interface Input {
   anchorTo?: 'start' | 'end'
   followOnAppend?: boolean | ScrollBehavior
   scrollEndThreshold?: number
+  scrollMargin?: number
+  enabled?: boolean
+  isRtl?: boolean
+  isScrollingResetDelay?: number
+  useScrollendEvent?: boolean
+  useAnimationFrameWithResizeObserver?: boolean
+  laneAssignmentMode?: 'estimate' | 'measured'
+  useCachedMeasurements?: boolean
+  debug?: boolean
+  measureElement?: (
+    element: Element,
+    entry: ResizeObserverEntry | undefined,
+    instance: Virtualizer<Window, Element>,
+  ) => number
 }
 
 // Render-time seed (window counterpart): paints the initial slice into the server HTML when

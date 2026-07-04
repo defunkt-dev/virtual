@@ -13,15 +13,20 @@ export interface WindowVirtualizerInput {
   count: number
   estimateSize?: (index: number) => number
   overscan?: number
+  // Horizontal window scrolling (the page scrolls sideways; default false).
+  horizontal?: boolean
   paddingStart?: number
   paddingEnd?: number
   scrollPaddingStart?: number
   scrollPaddingEnd?: number
   gap?: number
   lanes?: number
+  // Starting scroll offset. Defaults to reading the live window scroll position
+  // (window.scrollY, or window.scrollX when horizontal) on the client and 0 on the
+  // server. Pass a number to seed a server slice at a position (pairs with initialRect).
+  initialOffset?: number | (() => number)
   // Window viewport size for the render-time (server / pre-mount) slice. When omitted,
-  // there is no server slice. The window scroll position (initialOffset) is read from
-  // window.scrollY on the client and defaults to 0 (top) on the server.
+  // there is no server slice.
   initialRect?: { width: number; height: number }
   // Stable per-item identity so cached measurements survive reorder (defaults to the index).
   getItemKey?: (index: number) => number | string | bigint
@@ -40,6 +45,39 @@ export interface WindowVirtualizerInput {
   followOnAppend?: boolean | ScrollBehavior
   // How close (px) to the end still counts as "at the end" (default 1).
   scrollEndThreshold?: number
+  // The list's offset (px) from the top of the page, when other content sits above it.
+  // Shifts all position math; item.start values then INCLUDE this margin (subtract it
+  // when positioning items relative to the list). The textbook window-virtualizer knob.
+  scrollMargin?: number
+  // Disable switch (default true). false is NOT a freeze: core unobserves, clears
+  // its measurements, and renders an EMPTY window until re-enabled (re-enabling
+  // re-windows from the live scroll position).
+  enabled?: boolean
+  // Right-to-left horizontal lists (default false).
+  isRtl?: boolean
+  // ms after the last scroll event before "user is scrolling" ends (default 150).
+  isScrollingResetDelay?: number
+  // Use the native scrollend event instead of the isScrollingResetDelay timer.
+  useScrollendEvent?: boolean
+  // Batch ResizeObserver measurements into animation frames (avoids
+  // "ResizeObserver loop" console errors under heavy resize load).
+  useAnimationFrameWithResizeObserver?: boolean
+  // Masonry/multi-lane: how items are assigned to lanes — by 'estimate' (default)
+  // or by 'measured' sizes.
+  laneAssignmentMode?: 'estimate' | 'measured'
+  // Make the default measurer return the cached (or estimated) size instead of
+  // reading the DOM — freezes sizes when they are already known and DOM
+  // re-measures are unwanted.
+  useCachedMeasurements?: boolean
+  // Verbose engine logging.
+  debug?: boolean
+  // Replace HOW an item's size is read from its element (e.g. include margins,
+  // or measure a child). Defaults to core's border-box measurer.
+  measureElement?: (
+    element: Element,
+    entry: ResizeObserverEntry | undefined,
+    instance: Virtualizer<Window, Element>,
+  ) => number
 }
 
 // Single source of truth for the input -> virtual-core option mapping,
@@ -55,13 +93,23 @@ export function buildOptions(
     estimateSize: input.estimateSize ?? (() => 50),
     getScrollElement: () => (typeof document !== 'undefined' ? window : null),
     overscan: input.overscan ?? 5,
+    horizontal: input.horizontal,
     paddingStart: input.paddingStart,
     paddingEnd: input.paddingEnd,
     scrollPaddingStart: input.scrollPaddingStart,
     scrollPaddingEnd: input.scrollPaddingEnd,
     gap: input.gap,
     lanes: input.lanes,
-    initialOffset: () => (typeof document !== 'undefined' ? window.scrollY : 0),
+    // Consumer override first (mirrors react-virtual's spread-over-defaults), then the
+    // live window position on the client / 0 (top) on the server.
+    initialOffset:
+      input.initialOffset ??
+      (() =>
+        typeof document !== 'undefined'
+          ? input.horizontal
+            ? window.scrollX
+            : window.scrollY
+          : 0),
     initialRect: input.initialRect,
     getItemKey: input.getItemKey,
     rangeExtractor: input.rangeExtractor,
@@ -70,6 +118,16 @@ export function buildOptions(
     anchorTo: input.anchorTo,
     followOnAppend: input.followOnAppend,
     scrollEndThreshold: input.scrollEndThreshold,
+    scrollMargin: input.scrollMargin,
+    enabled: input.enabled,
+    isRtl: input.isRtl,
+    isScrollingResetDelay: input.isScrollingResetDelay,
+    useScrollendEvent: input.useScrollendEvent,
+    useAnimationFrameWithResizeObserver: input.useAnimationFrameWithResizeObserver,
+    laneAssignmentMode: input.laneAssignmentMode,
+    useCachedMeasurements: input.useCachedMeasurements,
+    debug: input.debug,
+    measureElement: input.measureElement,
     observeElementRect: observeWindowRect,
     observeElementOffset: observeWindowOffset,
     scrollToFn: windowScroll,

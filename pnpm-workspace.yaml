@@ -5,6 +5,7 @@ preferWorkspacePackages: true
 
 packages:
   - 'packages/*'
+  - 'packages/marko-virtual/e2e/*'
   - 'examples/angular/*'
   - 'examples/react/*'
   - 'examples/svelte/*'

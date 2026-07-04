@@ -9,9 +9,18 @@
     {
       "label": "Getting Started",
       "children": [
-        { "label": "Introduction", "to": "introduction" },
-        { "label": "Installation", "to": "installation" },
-        { "label": "Text Measurement with Pretext", "to": "pretext" }
+        {
+          "label": "Introduction",
+          "to": "introduction"
+        },
+        {
+          "label": "Installation",
+          "to": "installation"
+        },
+        {
+          "label": "Text Measurement with Pretext",
+          "to": "pretext"
+        }
       ],
       "frameworks": [
         {
@@ -35,7 +44,10 @@
         {
           "label": "solid",
           "children": [
-            { "label": "Solid Virtual", "to": "framework/solid/solid-virtual" }
+            {
+              "label": "Solid Virtual",
+              "to": "framework/solid/solid-virtual"
+            }
           ]
         },
         {
@@ -69,13 +81,24 @@
     },
     {
       "label": "Guides",
-      "children": [{ "label": "Chat", "to": "chat" }]
+      "children": [
+        {
+          "label": "Chat",
+          "to": "chat"
+        }
+      ]
     },
     {
       "label": "Core APIs",
       "children": [
-        { "label": "Virtualizer", "to": "api/virtualizer" },
-        { "label": "VirtualItem", "to": "api/virtual-item" }
+        {
+          "label": "Virtualizer",
+          "to": "api/virtualizer"
+        },
+        {
+          "label": "VirtualItem",
+          "to": "api/virtual-item"
+        }
       ]
     },
     {
@@ -299,6 +322,10 @@
               "label": "Infinite Scroll"
             },
             {
+              "to": "framework/marko/examples/chat",
+              "label": "Chat"
+            },
+            {
               "to": "framework/marko/examples/smooth-scroll",
               "label": "Smooth Scroll"
             },
@@ -309,10 +336,6 @@
             {
               "to": "framework/marko/examples/window",
               "label": "Window"
-            },
-            {
-              "to": "framework/marko/examples/chat",
-              "label": "Chat"
             },
             {
               "to": "framework/marko/examples/ssr",
