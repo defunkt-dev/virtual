@@ -279,12 +279,20 @@
               "label": "Grid"
             },
             {
+              "to": "framework/marko/examples/pretext",
+              "label": "Pretext"
+            },
+            {
               "to": "framework/marko/examples/padding",
               "label": "Padding"
             },
             {
               "to": "framework/marko/examples/scroll-padding",
               "label": "Scroll Padding"
+            },
+            {
+              "to": "framework/marko/examples/sticky",
+              "label": "Sticky"
             },
             {
               "to": "framework/marko/examples/infinite-scroll",
