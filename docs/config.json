@@ -326,6 +326,10 @@
               "label": "Chat"
             },
             {
+              "to": "framework/marko/examples/chat-pretext",
+              "label": "Chat + Pretext"
+            },
+            {
               "to": "framework/marko/examples/smooth-scroll",
               "label": "Smooth Scroll"
             },

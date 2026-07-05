@@ -88,7 +88,11 @@ static const AT_END_PX = 80
 
     <virtualizer/v
       count=messages.length
-      estimateSize=() => 74
+      // Bubble heights are width-dependent (they wrap): measured means run ~89px at
+      // typical widths (~79 at 1280px, ~106 at 560px). 88 keeps the prepend
+      // anchor-correction small at common widths; exact per-row heights are the
+      // pretext approach (see the Chat + Pretext example).
+      estimateSize=() => 88
       getScrollElement=() => scrollEl()
       getItemKey=(index: number) => messages[index]!.id
       anchorTo="end"
