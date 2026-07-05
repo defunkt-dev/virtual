@@ -40,7 +40,10 @@ static const AT_END_PX = 80
       .toolbar button { padding: 6px 12px; font-size: 13px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; cursor: pointer; }
       .toolbar button:hover { background: #f3f4f6; }
       .status { font-size: 13px; color: #6b7280; }
-      .messages { height: 480px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; background: #fafafa; }
+      /* overflow-anchor: none — the virtualizer owns scroll compensation on prepend;
+         leaving the browser's native scroll anchoring on can double-compensate for a
+         frame when content is inserted above the viewport. */
+      .messages { height: 480px; overflow-y: auto; overflow-anchor: none; border: 1px solid #e5e7eb; border-radius: 6px; background: #fafafa; }
       .message-row { padding: 6px 12px; }
       .bubble { max-width: 75%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 1.5; }
       .bubble-user { margin-left: auto; background: #2563eb; color: #fff; }
@@ -184,7 +187,10 @@ static const AT_END_PX = 80
         if (!el) return
         atEnd = el.scrollHeight - el.scrollTop - el.clientHeight <= AT_END_PX
         if (!state.autoHistoryEnabled || atEnd) return
-        if (el.scrollTop < 120) prependHistory()
+        // Load AHEAD: trigger while there is still ~1.5 viewport heights of runway, so
+        // history lands above the viewport (compensation invisible) and the fetch
+        // latency hides inside travel time instead of at a hard stop at the top.
+        if (el.scrollTop < el.clientHeight * 1.5) prependHistory()
       }
     >
       <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>

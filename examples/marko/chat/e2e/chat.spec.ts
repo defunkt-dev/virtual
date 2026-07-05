@@ -85,21 +85,44 @@ test('prepending history keeps the visible message anchored in place', async ({
 }) => {
   await page.goto('/')
   await waitForPin(page)
-  // move well away from the bottom so we are "reading history"
+  // Move to the middle of the thread: well away from the bottom ("reading
+  // history") AND outside the load-ahead auto-trigger zone near the top, so the
+  // prepend below is driven by the click alone.
   await page.locator('.messages').evaluate((el) => {
-    el.scrollTop = 300
+    el.scrollTop = Math.floor(el.scrollHeight / 2)
   })
   await expect(page.locator('[data-testid="status"]')).toHaveText('Reading history')
 
-  // pick a currently visible message and record its viewport position
-  const anchor = page.locator('[data-key="message-6"]')
+  // pick whatever message is currently visible near the viewport top and record it
+  const anchorKey = await page.evaluate(() => {
+    const el = document.querySelector('.messages')!
+    const top = el.getBoundingClientRect().top
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('.message-row'))
+    const visible = rows.find((row) => {
+      const box = row.getBoundingClientRect()
+      return box.top >= top && box.top < top + 200
+    })
+    return visible?.dataset.key ?? null
+  })
+  expect(anchorKey).not.toBeNull()
+  const anchor = page.locator(`[data-key="${anchorKey}"]`)
   await expect(anchor).toBeVisible()
   const beforeBox = await anchor.boundingBox()
 
+  const heightBefore = await page
+    .locator('.messages')
+    .evaluate((el) => el.scrollHeight)
+
   await page.locator('[data-testid="load-older"]').click()
   await expect(page.locator('[data-testid="status"]')).toHaveText('Loading history')
-  // history rows (negative indexes) exist after the prepend lands
-  await expect(page.locator('[data-key="message--1"]')).toBeAttached({ timeout: 3000 })
+  // The prepended rows are far above the render window here, so they are
+  // (correctly) virtualized away — DOM attachment is the wrong signal. The prepend
+  // landing is observable as total content growth.
+  await expect
+    .poll(() => page.locator('.messages').evaluate((el) => el.scrollHeight), {
+      timeout: 3000,
+    })
+    .toBeGreaterThan(heightBefore)
 
   const afterBox = await anchor.boundingBox()
   expect(afterBox).not.toBeNull()
@@ -111,10 +134,21 @@ test('scrolling near the top auto-loads older history', async ({ page }) => {
   await waitForPin(page)
   // wait past the 250ms arming delay
   await page.waitForTimeout(400)
+  const heightBefore = await page
+    .locator('.messages')
+    .evaluate((el) => el.scrollHeight)
+  // 700px is INSIDE the ~1.5-viewport load-ahead zone but far above the old
+  // hard-stop trigger: history must load while there is still runway. The loaded
+  // rows land above the (compensated) viewport and are virtualized away, so the
+  // signal is content growth, not DOM attachment.
   await page.locator('.messages').evaluate((el) => {
-    el.scrollTop = 60
+    el.scrollTop = 700
   })
-  await expect(page.locator('[data-key="message--1"]')).toBeAttached({ timeout: 3000 })
+  await expect
+    .poll(() => page.locator('.messages').evaluate((el) => el.scrollHeight), {
+      timeout: 3000,
+    })
+    .toBeGreaterThan(heightBefore)
 })
 
 test('Latest returns to the bottom and status flips back to At latest', async ({

@@ -32,7 +32,7 @@
     <let/listOffset=0/>
     <script>
       const el = listEl()
-      if (el) listOffset = el.offsetTop
+      if (el) listOffset = (el as unknown as HTMLElement).offsetTop
     </script>
 
     <window-virtualizer/v

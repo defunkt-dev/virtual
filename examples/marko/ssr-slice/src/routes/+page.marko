@@ -56,10 +56,10 @@ import { fetchPeople } from "../data"
                 class=item.index % 2 === 0 ? "item item-even" : "item item-odd"
                 style=`position: absolute; top: 0; left: 0; width: 100%; height: ${item.size}px; transform: translateY(${item.start}px)`
               >
-                <span class="idx">#${person.id}</span>
-                <span class="name">${person.name}</span>
-                <span class="email">${person.email}</span>
-                <span class="role">${person.role}</span>
+                <span class="idx">#${person!.id}</span>
+                <span class="name">${person!.name}</span>
+                <span class="email">${person!.email}</span>
+                <span class="role">${person!.role}</span>
               </div>
             </for>
           </div>
