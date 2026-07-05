@@ -2,6 +2,20 @@ import { Virtualizer } from "@tanstack/virtual-core"
 import type { Range, VirtualItem, ScrollToOptions } from "@tanstack/virtual-core"
 import { buildOptions, renderSlice } from "./options"
 
+export interface VirtualizerHandle {
+  virtualItems: VirtualItem[]
+  totalSize: number
+  range: { startIndex: number; endIndex: number } | null
+  measureElement: ((el: Element | null) => void) | undefined
+  scrollToIndex: (index: number, options?: ScrollToOptions) => void
+  scrollToOffset: (offset: number, options?: ScrollToOptions) => void
+  measure: () => void
+  resizeItem: (index: number, size: number) => void
+  scrollToEnd: (options?: { behavior?: ScrollToOptions['behavior'] }) => void
+  isAtEnd: (threshold?: number) => boolean
+  getDistanceFromEnd: () => number
+}
+
 export interface Input {
   count: number
   estimateSize?: (index: number) => number
@@ -91,7 +105,7 @@ export interface Input {
   }
 />
 
-<return=({
+<return=(({
   virtualItems: items,
   totalSize: size,
   range: range,
@@ -103,4 +117,4 @@ export interface Input {
   scrollToEnd: (options?: { behavior?: ScrollToOptions['behavior'] }) => v?.scrollToEnd(options),
   isAtEnd: (threshold?: number) => v?.isAtEnd(threshold) ?? false,
   getDistanceFromEnd: () => v?.getDistanceFromEnd() ?? Infinity,
-})>
+}) as VirtualizerHandle)>

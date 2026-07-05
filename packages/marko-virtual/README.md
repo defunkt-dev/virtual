@@ -235,4 +235,41 @@ pnpm --filter tanstack-marko-virtual-example-<name> dev
 
 ## TypeScript
 
-The tags are fully typed. The Marko language server reads the source `.marko` files directly — no `.d.ts` generation is needed. Ensure `@marko/language-tools` is installed in your editor for IDE support.
+The tags are fully typed. Each tag ships a committed `index.d.marko` (a types-only twin, like a `.d.ts` for a Marko template) that editors and [`@marko/type-check`](https://github.com/marko-js/language-server/tree/main/packages/type-check) prefer over the implementation file. Both tags also export a named handle interface — `VirtualizerHandle` / `WindowVirtualizerHandle` — describing the tag-variable shape, which you can use to type your own variables and functions.
+
+### Verification (CI)
+
+`pnpm test:types` runs `mtc` (marko-type-check) over the package: the `.ts` sources, the `.marko` tags and test fixtures, the tests, and the committed `.d.marko` files. This is what CI runs — CI only ever **verifies**, it never generates. If a tag's surface changes and the `.d.marko` files were not regenerated, this check fails instead of letting the types drift silently. The project file is `tsconfig.typecheck.json`.
+
+### Generating `.d.marko` (manual, on demand)
+
+The `.d.marko` files are **generated, committed artifacts** — regenerate them whenever a tag's `Input` or return surface changes:
+
+```bash
+pnpm types:generate
+```
+
+The script (`scripts/generate-d-marko.mjs`) verifies the sources type-check, deletes the old `.d.marko` (mtc prefers them as input when present), emits fresh ones via `tsconfig.emit.json`, copies them back beside the sources, and re-verifies. Review the diff and commit. Two notes: `TS6059` rootDir warnings during the emit step are a known benign artifact of the cross-package `virtual-core` paths mapping (the script accounts for them), and generation relies on the tags' **named** return interfaces — mtc's emitter truncates wide anonymous inline types, so keep returns cast to the exported handle types.
+
+### Running all e2e Tests
+To run all the e2e tests under each of `examples/marko/<example-name>/e2e` use the command
+
+```bash
+pnpm -r --workspace-concurrency=1 --filter "./examples/marko/*" run test:e2e
+```
+_Note:_ This has to be run sequentially as they all start the same port.
+
+### Running all unit tests
+To run all the unit tests specifically for `marko-virtual/tests` use the command
+
+```bash
+pnpm --filter @tanstack/marko-virtual exec vitest run --reporter=verbose 
+```
+
+### Pre-requisite before running tests
+
+```bash
+pnpm install
+pnpm --filter @tanstack/virtual-core build
+pnpm --filter @tanstack/marko-virtual build
+```
