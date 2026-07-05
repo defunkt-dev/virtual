@@ -337,6 +337,12 @@ instance built for the slice is transient — nothing live is serialized; only p
 positions and total size) crosses and recomputes identically on resume. The full
 fetch → serialize → resume → slice flow is shown in the SSR data-fetching example.
 
+> **Note (no-JS):** a server slice does not by itself make a no-JavaScript page. If the virtualizer
+> sits inside an `<await>` with a placeholder (as in the data-fetching examples), Marko streams the
+> awaited content out of order and reveals it with a small inline script — with JavaScript disabled
+> the painted rows are in the HTML but the page renders blank. Script-free visibility requires
+> in-order rendering (no placeholder).
+
 **Scroll restore (`initialOffset`, element only).** To server-render the list at a scroll position
 instead of the top — a deep link, or a restored scroll — pass `initialOffset` alongside `initialRect`.
 The server paints the slice around that offset (it includes `overscan`, so the first *painted* row
