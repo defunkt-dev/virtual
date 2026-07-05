@@ -259,6 +259,11 @@ pnpm -r --workspace-concurrency=1 --filter "./examples/marko/*" run test:e2e
 ```
 _Note:_ This has to be run sequentially as they all start the same port.
 
+_Note:_ All suites run against **dev servers**; production builds are not exercised by
+any test. After bumping `marko` (or other build-path dependencies), sanity-check a
+production build manually: `pnpm --filter <example> build` then `preview`, and click
+through the chat example's Stream reply.
+
 ### Running all unit tests
 To run all the unit tests specifically for `marko-virtual/tests` use the command
 
@@ -273,3 +278,9 @@ pnpm install
 pnpm --filter @tanstack/virtual-core build
 pnpm --filter @tanstack/marko-virtual build
 ```
+
+## Author & license
+
+Authored and maintained as part of [TanStack Virtual](https://tanstack.com/virtual) by [Tanner Linsley](https://github.com/tannerlinsley) and contributors; Marko adapter contributed by `defunkt-dev` / `@DSz340`. If this library helps you, consider [sponsoring TanStack](https://github.com/sponsors/tannerlinsley).
+
+[MIT](https://github.com/TanStack/virtual/blob/main/LICENSE) © Tanner Linsley
