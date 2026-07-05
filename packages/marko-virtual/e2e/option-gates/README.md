@@ -19,6 +19,18 @@ this bundle). First browser run may need `npx playwright install chromium`.
 Run: `npm run test:e2e` from this folder (the config starts the dev server
 itself), or start `npm run dev -- --port 4199` manually and rerun to reuse it.
 
+Dependency note (do not re-add `@tanstack/marko-virtual` here): this package
+lives INSIDE packages/marko-virtual. Depending on the ancestor makes pnpm
+create node_modules/@tanstack/marko-virtual -> ../../.. — a symlink cycle.
+`@marko/vite`'s production-only known-templates scan globs `**/*.marko`
+following symlinks with no cycle guard, so any `marko-run build` of an app
+that links the package (every example) dies with ENAMETOOLONG. The dep is
+also unnecessary: the tags resolve through the relative taglib import above,
+and virtual-core through the vite alias. If a real JS import from the package
+is ever needed here, use pnpm's `dependenciesMeta` injected mode (which packs
+a copy honoring the `files` field, so e2e/ is excluded and no cycle forms)
+instead of a plain workspace dependency.
+
 Publishing: not affected — the package's `files` field publishes only dist,
 src/tags, marko.json, and README.md, so nothing under e2e/ reaches npm.
 

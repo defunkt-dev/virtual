@@ -652,13 +652,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -674,13 +674,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -696,13 +696,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -718,13 +718,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -740,13 +740,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -762,13 +762,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -787,13 +787,13 @@ importers:
         version: 0.0.7
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -809,13 +809,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -831,13 +831,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -853,13 +853,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -875,13 +875,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -897,13 +897,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -919,13 +919,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -941,13 +941,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -963,13 +963,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -985,13 +985,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -1007,13 +1007,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -1029,13 +1029,13 @@ importers:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       '@tanstack/marko-virtual':
         specifier: ^3.14.0
         version: link:../../../packages/marko-virtual
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -1449,7 +1449,7 @@ importers:
         version: 4.2.20
       svelte-check:
         specifier: ^4.2.1
-        version: 4.3.3(picomatch@4.0.4)(svelte@4.2.20)(typescript@5.6.3)
+        version: 4.3.3(picomatch@4.0.5)(svelte@4.2.20)(typescript@5.6.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1480,7 +1480,7 @@ importers:
         version: 4.2.20
       svelte-check:
         specifier: ^4.2.1
-        version: 4.3.3(picomatch@4.0.4)(svelte@4.2.20)(typescript@5.6.3)
+        version: 4.3.3(picomatch@4.0.5)(svelte@4.2.20)(typescript@5.6.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1511,7 +1511,7 @@ importers:
         version: 4.2.20
       svelte-check:
         specifier: ^4.2.1
-        version: 4.3.3(picomatch@4.0.4)(svelte@4.2.20)(typescript@5.6.3)
+        version: 4.3.3(picomatch@4.0.5)(svelte@4.2.20)(typescript@5.6.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1545,7 +1545,7 @@ importers:
         version: 4.2.20
       svelte-check:
         specifier: ^4.2.1
-        version: 4.3.3(picomatch@4.0.4)(svelte@4.2.20)(typescript@5.6.3)
+        version: 4.3.3(picomatch@4.0.5)(svelte@4.2.20)(typescript@5.6.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1579,7 +1579,7 @@ importers:
         version: 4.2.20
       svelte-check:
         specifier: ^4.2.1
-        version: 4.3.3(picomatch@4.0.4)(svelte@4.2.20)(typescript@5.6.3)
+        version: 4.3.3(picomatch@4.0.5)(svelte@4.2.20)(typescript@5.6.3)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1908,20 +1908,17 @@ importers:
         specifier: ^10.0.0
         version: 10.4.1
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
 
   packages/marko-virtual/e2e/option-gates:
     dependencies:
       '@marko/run':
         specifier: ^0.10.0
-        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
-      '@tanstack/marko-virtual':
-        specifier: ^3.14.0
-        version: link:../..
+        version: 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
       marko:
-        specifier: ^6.0.0
-        version: 6.1.8
+        specifier: ^6.2.2
+        version: 6.2.2
     devDependencies:
       '@playwright/test':
         specifier: ^1.61.0
@@ -6812,6 +6809,9 @@ packages:
   htmljs-parser@5.12.0:
     resolution: {integrity: sha512-AX7R1/VZXAFuywmX6xWIx+oYiSA8py1yUh+tPka+rVb+QIa+Gjw/nlDhNK+DYTYoYLOQ9J7pUGtsEoJj9ve6Zg==}
 
+  htmljs-parser@5.12.1:
+    resolution: {integrity: sha512-QnHLg5SWqoH5o8MD4iOWJFtdKSS2lXxtNgyznFXvEeeCK0CTi6URdYtFGkFGDANdq8RZzkuc91KaBgLx2WAhSA==}
+
   htmlparser2@10.1.0:
     resolution: {integrity: sha512-VTZkM9GWRAtEpveh7MSF6SjjrpNVNNVJfFup7xTY3UpFtm67foy9HDVXneLtFVt4pMz5kZtgNcvCniNFb1hlEQ==}
 
@@ -7513,8 +7513,8 @@ packages:
     engines: {node: '>= 18'}
     hasBin: true
 
-  marko@6.1.8:
-    resolution: {integrity: sha512-7OLNy2gdSyxlTwwOpsVeFlWypcATV/SM140pkW2YUNkTzTnSDR3ICf4uoKtmTD/fXVzr0Uo+lAcVrmEz/sI0vA==}
+  marko@6.2.2:
+    resolution: {integrity: sha512-x5/EvdHvY1169q6WT9lUpJANTZ6epbbCRcQwSKd0mcHj/7x5qzeFHNYOVWMXNoS2q2O3i+I/zQOhS3IEhV3rEg==}
     engines: {node: '>=22'}
 
   math-intrinsics@1.1.0:
@@ -8088,6 +8088,10 @@ packages:
 
   picomatch@4.0.4:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
+    engines: {node: '>=12'}
+
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
 
   pify@4.0.1:
@@ -11748,7 +11752,7 @@ snapshots:
       '@luxass/strip-json-comments': 1.4.0
       complain: 1.6.1
       he: 1.2.0
-      htmljs-parser: 5.12.0
+      htmljs-parser: 5.12.1
       jsesc: 3.1.0
       kleur: 4.1.5
       lasso-package-root: 1.0.1
@@ -11766,13 +11770,13 @@ snapshots:
       htmljs-parser: 5.12.0
       relative-import-path: 1.0.0
 
-  '@marko/run-explorer@2.0.3(@marko/run@0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1))':
+  '@marko/run-explorer@2.0.3(@marko/run@0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1))':
     dependencies:
-      '@marko/run': 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
+      '@marko/run': 0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)
 
-  '@marko/run@0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)':
+  '@marko/run@0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1)':
     dependencies:
-      '@marko/run-explorer': 2.0.3(@marko/run@0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.1.8)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1))
+      '@marko/run-explorer': 2.0.3(@marko/run@0.10.0(@marko/compiler@5.40.0)(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(marko@6.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1))
       '@marko/vite': 6.1.0(@marko/compiler@5.40.0)(vite@8.1.2(@types/node@24.9.2)(esbuild@0.25.12)(jiti@2.6.1)(less@4.2.2)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1))
       browserslist: 4.28.4
       cli-table3: 0.6.5
@@ -11784,7 +11788,7 @@ snapshots:
       glob: 13.0.6
       human-format: 1.2.1
       kleur: 4.1.5
-      marko: 6.1.8
+      marko: 6.2.2
       parse-node-args: 1.1.3
       sade: 1.8.1
       serve-static: 2.2.1(supports-color@10.2.2)
@@ -12333,7 +12337,7 @@ snapshots:
       detect-libc: 2.1.2
       is-glob: 4.0.3
       node-addon-api: 7.1.1
-      picomatch: 4.0.4
+      picomatch: 4.0.5
     optionalDependencies:
       '@parcel/watcher-android-arm64': 2.5.6
       '@parcel/watcher-darwin-arm64': 2.5.6
@@ -14831,6 +14835,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.4
 
+  fdir@6.5.0(picomatch@4.0.5):
+    optionalDependencies:
+      picomatch: 4.0.5
+
   figures@3.2.0:
     dependencies:
       escape-string-regexp: 1.0.5
@@ -15088,6 +15096,8 @@ snapshots:
       cheerio: 1.1.2
 
   htmljs-parser@5.12.0: {}
+
+  htmljs-parser@5.12.1: {}
 
   htmlparser2@10.1.0:
     dependencies:
@@ -15837,7 +15847,7 @@ snapshots:
 
   marked@12.0.2: {}
 
-  marko@6.1.8:
+  marko@6.2.2:
     dependencies:
       '@marko/compiler': 5.40.0
       csstype: 3.2.3
@@ -16476,6 +16486,8 @@ snapshots:
   picomatch@4.0.3: {}
 
   picomatch@4.0.4: {}
+
+  picomatch@4.0.5: {}
 
   pify@4.0.1: {}
 
@@ -17357,6 +17369,18 @@ snapshots:
     transitivePeerDependencies:
       - picomatch
 
+  svelte-check@4.3.3(picomatch@4.0.5)(svelte@4.2.20)(typescript@5.6.3):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      chokidar: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.5)
+      picocolors: 1.1.1
+      sade: 1.8.1
+      svelte: 4.2.20
+      typescript: 5.6.3
+    transitivePeerDependencies:
+      - picomatch
+
   svelte-hmr@0.16.0(svelte@4.2.20):
     dependencies:
       svelte: 4.2.20
@@ -17452,8 +17476,8 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
 
   tinyrainbow@3.1.0: {}
 
@@ -17722,8 +17746,8 @@ snapshots:
   vite@6.4.3(@types/node@24.9.2)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass@1.85.0)(terser@5.39.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.12
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
       postcss: 8.5.16
       rollup: 4.62.2
       tinyglobby: 0.2.17

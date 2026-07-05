@@ -61,11 +61,11 @@
     "@tanstack/virtual-core": "workspace:*"
   },
   "devDependencies": {
+    "@marko/language-tools": "^2.6.2",
+    "@marko/type-check": "3.1.1",
     "@marko/vite": "^6.1.0",
     "@testing-library/dom": "^10.0.0",
-    "marko": "^6.0.0",
-    "@marko/type-check": "3.1.1",
-    "@marko/language-tools": "^2.6.2"
+    "marko": "^6.2.2"
   },
   "peerDependencies": {
     "marko": "^6.0.0"
