@@ -154,7 +154,7 @@ static function messageHeight(message: Message, viewportWidth: number) {
     <virtualizer/v
       count=messages.length
       estimateSize=(index: number) => messageHeight(messages[index]!, state.width)
-      getScrollElement=() => scrollEl()
+      getScrollElement=(): Element | null => scrollEl() ?? null
       getItemKey=(index: number) => messages[index]!.id
       anchorTo="end"
       followOnAppend=true
@@ -241,8 +241,7 @@ static function messageHeight(message: Message, viewportWidth: number) {
     // core's own scroll listener, so it reads the element rather than v.isAtEnd().
     <div/scrollEl
       class="messages"
-      onScroll() {
-        const el = scrollEl()
+      onScroll(_event, el) {
         if (!el) return
         atEnd = el.scrollHeight - el.scrollTop - el.clientHeight <= AT_END_PX
         if (!state.autoHistoryEnabled || atEnd) return
@@ -253,13 +252,13 @@ static function messageHeight(message: Message, viewportWidth: number) {
       }
     >
       <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>
-        <for|item| of=v.virtualItems by=(item) => item.key>
-          // No measureElement and no per-row measure script: the calculated height IS
-          // the row height (set explicitly below), so there is nothing to correct.
+        // No measureElement and no per-row measure script: the calculated height IS
+        // the row height (set explicitly below), so there is nothing to correct.
+        <for|item| of=v.virtualItems by=(item) => String(item.key)>
           <const/message = (messages[item.index]!)/>
           <div
             data-index=item.index
-            data-key=item.key
+            data-key=String(item.key)
             class="message-row"
             style=`position: absolute; top: 0; left: 0; width: 100%; height: ${item.size}px; transform: translateY(${item.start}px)`
           >
@@ -272,6 +271,7 @@ static function messageHeight(message: Message, viewportWidth: number) {
       </div>
     </div>
 
+    <const/lifecycleState = ({ cleanup: null as (() => void) | null })/>
     <lifecycle
       onMount() {
         const node = scrollEl()
@@ -295,13 +295,13 @@ static function messageHeight(message: Message, viewportWidth: number) {
           clearCache()
           v.measure()
         })
-        this.cleanup = () => {
+        lifecycleState.cleanup = () => {
           cancelled = true
           observer.disconnect()
         }
       }
       onDestroy() {
-        this.cleanup?.()
+        lifecycleState.cleanup?.()
         state.streamAbort?.abort()
       }
     />

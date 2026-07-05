@@ -14,7 +14,7 @@
         measureElement=(el, _entry, _instance) => ((el as HTMLElement).offsetHeight + 10)
       />
       <div style=`height: ${v.totalSize}px; position: relative`>
-        <for|item| of=v.virtualItems by=(item) => item.key>
+        <for|item| of=v.virtualItems by=(item) => String(item.key)>
           <div/itemEl
             data-index=item.index
             data-size=item.size

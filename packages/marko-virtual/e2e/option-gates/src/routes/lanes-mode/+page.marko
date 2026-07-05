@@ -16,7 +16,7 @@
         getScrollElement=() => scrollEl()
       />
       <div style=`height: ${v.totalSize}px; position: relative`>
-        <for|item| of=v.virtualItems by=(item) => item.key>
+        <for|item| of=v.virtualItems by=(item) => String(item.key)>
           <div/itemEl
             data-index=item.index
             data-lane=item.lane

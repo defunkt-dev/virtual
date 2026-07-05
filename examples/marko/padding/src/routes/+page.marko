@@ -54,7 +54,7 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
     <virtualizer/vRow
       count=ROWS.length
       estimateSize=() => 50
-      getScrollElement=() => rowsEl()
+      getScrollElement=(): Element | null => rowsEl() ?? null
       paddingStart=100
       paddingEnd=100
     />
@@ -62,14 +62,14 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
       horizontal=true
       count=COLUMNS.length
       estimateSize=() => 50
-      getScrollElement=() => colsEl()
+      getScrollElement=(): Element | null => colsEl() ?? null
       paddingStart=100
       paddingEnd=100
     />
     <h3>Rows</h3>
     <div/rowsEl class="list" data-testid="rows-list" style="height: 200px; width: 400px">
       <div style=`height: ${vRow.totalSize}px; width: 100%; position: relative`>
-        <for|item| of=vRow.virtualItems by=(item) => item.key>
+        <for|item| of=vRow.virtualItems by=(item) => String(item.key)>
           <div/rowItemEl
             data-index=item.index
             class=(item.index % 2 ? 'item-odd' : 'item-even')
@@ -89,7 +89,7 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
     <h3>Columns</h3>
     <div/colsEl class="list" data-testid="cols-list" style="width: 400px; height: 100px">
       <div style=`width: ${vCol.totalSize}px; height: 100%; position: relative`>
-        <for|item| of=vCol.virtualItems by=(item) => item.key>
+        <for|item| of=vCol.virtualItems by=(item) => String(item.key)>
           <div/colItemEl
             data-index=item.index
             class=(item.index % 2 ? 'item-odd' : 'item-even')
@@ -121,7 +121,7 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
       <virtualizer/vGridRow
         count=ROWS.length
         estimateSize=() => 50
-        getScrollElement=() => gridEl()
+        getScrollElement=(): Element | null => gridEl() ?? null
         paddingStart=200
         paddingEnd=200
         indexAttribute="data-row-index"
@@ -130,7 +130,7 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
         horizontal=true
         count=COLUMNS.length
         estimateSize=() => 50
-        getScrollElement=() => gridEl()
+        getScrollElement=(): Element | null => gridEl() ?? null
         paddingStart=200
         paddingEnd=200
         indexAttribute="data-column-index"
@@ -145,8 +145,8 @@ static const HALF_WAY = Math.floor(ROWS.length / 2)
       </div>
       <div/gridEl class="list" data-testid="grid-list" style="height: 400px; width: 500px">
         <div style=`height: ${vGridRow.totalSize}px; width: ${vGridCol.totalSize}px; position: relative`>
-          <for|row| of=vGridRow.virtualItems by=(row) => row.key>
-            <for|col| of=vGridCol.virtualItems by=(col) => col.key>
+          <for|row| of=vGridRow.virtualItems by=(row) => String(row.key)>
+            <for|col| of=vGridCol.virtualItems by=(col) => String(col.key)>
               <div/cellEl
                 data-row-index=row.index
                 data-column-index=col.index

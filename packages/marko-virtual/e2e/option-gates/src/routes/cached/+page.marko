@@ -17,7 +17,7 @@
           indexAttribute="data-frozen-index"
         />
         <div style=`height: ${fv.totalSize}px; position: relative`>
-          <for|item| of=fv.virtualItems by=(item) => item.key>
+          <for|item| of=fv.virtualItems by=(item) => String(item.key)>
             <div/frozenItemEl
               data-frozen-index=item.index
               data-size=item.size
@@ -43,7 +43,7 @@
           indexAttribute="data-control-index"
         />
         <div style=`height: ${cv.totalSize}px; position: relative`>
-          <for|item| of=cv.virtualItems by=(item) => item.key>
+          <for|item| of=cv.virtualItems by=(item) => String(item.key)>
             <div/controlItemEl
               data-control-index=item.index
               data-size=item.size

@@ -128,7 +128,7 @@ static function estimateMessageHeight(message: Message, viewportWidth: number) {
       count=MESSAGES.length
       estimateSize=(index: number) => estimateMessageHeight(MESSAGES[index]!, widthState.current)
       getItemKey=(index: number) => MESSAGES[index]!.id
-      getScrollElement=() => scrollEl()
+      getScrollElement=(): Element | null => scrollEl() ?? null
       overscan=8
     />
 
@@ -141,7 +141,7 @@ static function estimateMessageHeight(message: Message, viewportWidth: number) {
 
     <div/scrollEl class="list" data-testid="list">
       <div class="spacer" data-testid="spacer" style=`height: ${v.totalSize}px`>
-        <for|item| of=v.virtualItems by=(item) => item.key>
+        <for|item| of=v.virtualItems by=(item) => String(item.key)>
           <const/message = (MESSAGES[item.index]!)/>
           <div
             data-index=item.index
@@ -160,6 +160,7 @@ static function estimateMessageHeight(message: Message, viewportWidth: number) {
       </div>
     </div>
 
+    <const/lifecycleState = ({ cleanup: null as (() => void) | null })/>
     <lifecycle
       onMount() {
         const node = scrollEl()
@@ -183,13 +184,13 @@ static function estimateMessageHeight(message: Message, viewportWidth: number) {
           clearCache()
           v.measure()
         })
-        this.cleanup = () => {
+        lifecycleState.cleanup = () => {
           cancelled = true
           observer.disconnect()
         }
       }
       onDestroy() {
-        this.cleanup?.()
+        lifecycleState.cleanup?.()
       }
     />
   </body>

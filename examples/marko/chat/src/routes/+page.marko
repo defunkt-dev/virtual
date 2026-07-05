@@ -96,7 +96,7 @@ static const AT_END_PX = 80
       // anchor-correction small at common widths; exact per-row heights are the
       // pretext approach (see the Chat + Pretext example).
       estimateSize=() => 88
-      getScrollElement=() => scrollEl()
+      getScrollElement=(): Element | null => scrollEl() ?? null
       getItemKey=(index: number) => messages[index]!.id
       anchorTo="end"
       followOnAppend=true
@@ -182,8 +182,7 @@ static const AT_END_PX = 80
     // (v.isAtEnd() is fine anywhere outside a competing scroll handler.)
     <div/scrollEl
       class="messages"
-      onScroll() {
-        const el = scrollEl()
+      onScroll(_event, el) {
         if (!el) return
         atEnd = el.scrollHeight - el.scrollTop - el.clientHeight <= AT_END_PX
         if (!state.autoHistoryEnabled || atEnd) return
@@ -194,16 +193,16 @@ static const AT_END_PX = 80
       }
     >
       <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>
-        <for|item| of=v.virtualItems by=(item) => item.key>
+        <for|item| of=v.virtualItems by=(item) => String(item.key)>
           <div/rowEl
             data-index=item.index
-            data-key=item.key
+            data-key=String(item.key)
             class="message-row"
             style=`position: absolute; top: 0; left: 0; width: 100%; transform: translateY(${item.start}px)`
           >
             <script() {
               const _key = item.key
-              const node = rowEl()
+              const node: HTMLDivElement | undefined = rowEl()
               if (node && v.measureElement) v.measureElement(node)
             }/>
             <const/message = (messages[item.index]!)/>

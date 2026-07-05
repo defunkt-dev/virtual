@@ -40,7 +40,7 @@
     <virtualizer/v
       count=10000
       estimateSize=() => 35
-      getScrollElement=() => scrollEl()
+      getScrollElement=(): Element | null => scrollEl() ?? null
       overscan=5
       paddingStart=theadHeight
       scrollPaddingStart=theadHeight
@@ -78,6 +78,7 @@
       </table>
     </div>
 
+    <const/lifecycleState = ({ cleanup: null as (() => void) | null })/>
     <lifecycle
       onMount() {
         const node = theadEl()
@@ -87,10 +88,10 @@
         })
         observer.observe(node)
         theadHeight = node.getBoundingClientRect().height
-        this.cleanup = () => observer.disconnect()
+        lifecycleState.cleanup = () => observer.disconnect()
       }
       onDestroy() {
-        this.cleanup?.()
+        lifecycleState.cleanup?.()
       }
     />
   </body>

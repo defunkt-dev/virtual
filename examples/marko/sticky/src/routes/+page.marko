@@ -68,7 +68,7 @@ static const activeStickyFor = (startIndex: number) =>
     <virtualizer/v
       count=ROWS.length
       estimateSize=() => 50
-      getScrollElement=() => scrollEl()
+      getScrollElement=(): Element | null => scrollEl() ?? null
       rangeExtractor=(range) => {
         const next = new Set([
           activeStickyFor(range.startIndex),
@@ -85,7 +85,7 @@ static const activeStickyFor = (startIndex: number) =>
 
     <div/scrollEl class="list" data-testid="list">
       <div style=`height: ${v.totalSize}px; width: 100%; position: relative`>
-        <for|item| of=v.virtualItems by=(item) => item.key>
+        <for|item| of=v.virtualItems by=(item) => String(item.key)>
           <div
             data-index=item.index
             data-sticky=(isSticky(item.index) ? 'true' : null)
